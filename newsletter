@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Inn at Willow Grove — Staff Newsletter | November 1, 2026 Launch Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE INN AT WILLOW GROVE — STAFF NEWSLETTER  (v3 draft)
+   Single file: 2-page print (8.5x11) + responsive web
+   Prepared by Deidre Durant, EA
+   ------------------------------------------------------------
+   MONTHLY UPDATES: see the EDITIONS block in the script below.
+   PHOTOS: each frame is set individually — upload, placeholder,
+   or hide. See .frame-tools under each frame on screen.
+   FIT: the auto-fit engine keeps the piece to exactly 2 pages.
+   ============================================================ */
+
+:root{
+  --orange:#CE5531;
+  --navy:#2A3447;
+  --teal:#76C3C4;
+  --black:#030202;
+  --grey:#F5F4F0;
+  --tan:#FDF8EE;
+  --body:#3F3B3B;
+  --rule:#DCD8D0;
+  --qr-size:1.15in;        /* printed QR size — keep between 1in and 1.25in */
+  --d:1;                   /* spacing density  — set by the auto-fit engine */
+  --t:1;                   /* type scale       — set by the auto-fit engine */
+  --script:"Amalfi Coast","Great Vibes",cursive;
+  --sans:"Montserrat","Helvetica Neue",Arial,sans-serif;
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;background:#E8E6E1;
+  font-family:var(--sans);
+  font-size:calc(10.5pt * var(--t));
+  font-weight:400;line-height:1.5;color:var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+p{margin:0 0 calc(7px * var(--d));} p:last-child{margin-bottom:0;}
+ul{margin:0;padding-left:15px;}
+li{margin-bottom:calc(4px * var(--d));} li:last-child{margin-bottom:0;}
+a{color:var(--orange);}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+/* ---------- CONTROL BAR (screen only) ---------- */
+.controls{
+  position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;
+  padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px 14px;
+  align-items:flex-end;justify-content:center;box-shadow:0 2px 8px rgba(3,2,2,.25);
+}
+.ctrl{display:flex;flex-direction:column;gap:3px;}
+.ctrl label{font-size:8pt;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);}
+.ctrl select,.ctrl input[type=url]{
+  font-family:var(--sans);font-size:9.5pt;padding:6px 8px;border:1px solid #4A5468;
+  border-radius:2px;background:#fff;color:var(--body);min-width:180px;
+}
+.ctrl input[type=url]{min-width:230px;}
+.ctrl-check{flex-direction:row;align-items:center;gap:6px;padding-bottom:7px;}
+.ctrl-check label{text-transform:none;letter-spacing:.03em;font-size:9pt;color:#fff;font-weight:500;}
+.btn{font-family:var(--sans);font-size:9.5pt;font-weight:600;border-radius:2px;padding:9px 16px;cursor:pointer;letter-spacing:.03em;border:1px solid transparent;}
+.btn-print{background:var(--orange);color:#fff;border:0;}
+.btn-print:hover{background:#B84826;}
+.btn-ghost{background:transparent;color:#fff;border-color:#4A5468;padding:8px 13px;}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+
+/* fit + read-time meter */
+.meter{
+  width:100%;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;align-items:center;
+  font-size:8.5pt;letter-spacing:.04em;color:#A9B3C4;
+  border-top:1px solid #3A4558;padding-top:8px;
+}
+.meter b{font-weight:600;color:#fff;}
+.meter .ok{color:var(--teal);}
+.meter .warn{color:#F0A07E;}
+.meter .bad{color:#FF8C6B;}
+
+/* ---------- PAGE SHELL ---------- */
+.page{
+  width:8.5in;min-height:11in;margin:22px auto;padding:.45in .5in .4in;
+  background:#fff;box-shadow:0 3px 14px rgba(3,2,2,.18);position:relative;
+  display:flex;flex-direction:column;
+}
+.page.overflowing{box-shadow:0 0 0 2px var(--orange),0 3px 14px rgba(3,2,2,.18);}
+
+/* ---------- BANNERS ---------- */
+.masthead{background:var(--black);color:#fff;padding:calc(15px * var(--d)) 20px calc(13px * var(--d));text-align:center;margin:-.45in -.5in calc(13px * var(--d));}
+.logo-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:5px;}
+.logo-row img{max-height:calc(34px * var(--d));width:auto;display:block;}
+.logo-fallback{font-size:8pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fff;opacity:.9;}
+.masthead h1{font-family:var(--script);font-size:calc(24pt * var(--t));font-weight:400;line-height:1.1;color:#fff;margin:2px 0 4px;}
+.masthead .rule{width:120px;height:1px;background:var(--orange);margin:0 auto 6px;}
+.masthead .meta{font-size:8.5pt;font-weight:500;letter-spacing:.05em;color:#CFCAC4;margin:0;}
+.draft-tag{display:none;margin:6px auto 0;padding:2px 10px;border:1px solid var(--orange);font-size:7.5pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);width:max-content;}
+body.draft .draft-tag{display:block;}
+
+.footer-banner{background:var(--black);color:#fff;padding:calc(15px * var(--d)) 20px;margin:auto -.5in -.4in;text-align:center;}
+.footer-banner img{max-height:calc(38px * var(--d));margin-bottom:5px;}
+.footer-banner .hub{font-size:9.5pt;color:#fff;margin:0 0 5px;}
+.footer-banner .hub a{color:var(--teal);text-decoration:none;font-weight:600;word-break:break-word;}
+.footer-banner .credit{font-size:8pt;color:#9A948E;letter-spacing:.04em;margin:0;padding-top:6px;border-top:1px solid #2C2827;display:block;}
+
+/* ---------- TYPE ---------- */
+.section-header{font-size:calc(13pt * var(--t));font-weight:600;color:var(--orange);margin:0 0 calc(7px * var(--d));line-height:1.2;display:flex;align-items:center;gap:9px;}
+.section-header::after{content:"";flex:1;height:1px;background:var(--rule);}
+.subhead{font-size:calc(10pt * var(--t));font-weight:500;color:var(--teal);text-transform:uppercase;letter-spacing:.11em;margin:0 0 4px;}
+.section{margin-bottom:calc(13px * var(--d));}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--grey);padding:calc(11px * var(--d)) calc(13px * var(--d));border-radius:2px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:calc(11px * var(--d));}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:calc(9px * var(--d));}
+.bordered-orange{border-left:4px solid var(--orange);}
+.bordered-navy{border-left:4px solid var(--navy);}
+.bordered-teal{border-left:4px solid var(--teal);}
+
+.value-card{background:var(--tan);border-left:4px solid var(--orange);padding:calc(11px * var(--d)) calc(14px * var(--d));border-radius:2px;}
+.value-card .value-name{font-size:calc(11.5pt * var(--t));font-weight:600;color:var(--navy);margin:0 0 3px;}
+.value-card .value-tag{font-size:8.5pt;font-weight:500;color:var(--teal);text-transform:uppercase;letter-spacing:.11em;margin:0 0 4px;}
+
+.focus-box{display:grid;grid-template-columns:1fr 1fr;gap:calc(14px * var(--d));margin-top:calc(10px * var(--d));}
+.focus-box > div + div{border-left:1px solid var(--rule);padding-left:calc(14px * var(--d));}
+.focus-box .value-tag{margin-bottom:3px;}
+.huddle{display:grid;grid-template-columns:1.2in 1fr;gap:calc(13px * var(--d));align-items:start;}
+.huddle.no-photo{grid-template-columns:1fr;}
+.gm-focus{margin-top:calc(8px * var(--d));padding-top:calc(7px * var(--d));border-top:1px solid var(--rule);}
+.gm-focus strong{color:var(--navy);}
+
+.praise{background:var(--tan);border-left:4px solid var(--teal);padding:calc(10px * var(--d)) calc(13px * var(--d));border-radius:2px;}
+.praise .group{margin-bottom:calc(7px * var(--d));}
+.praise .group:last-child{margin-bottom:0;}
+.praise .dept{margin-bottom:2px;}
+.quote{font-style:italic;}
+
+.milestone-list{list-style:none;padding:0;margin:0;}
+.milestone-list li{display:flex;justify-content:space-between;gap:10px;padding:calc(2.5px * var(--d)) 0;border-bottom:1px dotted var(--rule);font-size:calc(10pt * var(--t));}
+.milestone-list li:last-child{border-bottom:0;}
+.milestone-list .who{font-weight:500;color:var(--navy);}
+.milestone-list .when{color:#6E6865;font-size:calc(9pt * var(--t));white-space:nowrap;}
+.card-note{font-size:calc(8.5pt * var(--t));color:#6E6865;margin-top:calc(6px * var(--d));}
+
+/* ---------- PHOTO FRAMES ---------- */
+.photo{margin:0;}
+.frame{
+  position:relative;background:#EDEAE4 center/cover no-repeat;border:1px dashed #C6C0B6;
+  border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.frame:hover{border-color:var(--orange);}
+.frame.headshot{aspect-ratio:1/1.1;}
+.frame.snapshot{aspect-ratio:4/3;}
+.frame.portrait{width:1in;aspect-ratio:1/1.12;flex:none;}
+.frame .frame-label{font-size:7.5pt;font-weight:500;color:#8A837A;letter-spacing:.06em;padding:6px;line-height:1.35;}
+.frame .frame-mark{display:none;font-family:var(--script);font-size:calc(15pt * var(--t));color:#C8BFAE;line-height:1.2;padding:6px;}
+.frame.filled{border-style:solid;border-color:var(--rule);}
+.frame.filled .frame-label,.frame.filled .frame-mark{display:none;}
+.frame input[type=file]{display:none;}
+.frame-caption{font-size:calc(8pt * var(--t));color:#6E6865;text-align:center;margin-top:3px;}
+
+/* per-frame state — set individually, frame by frame */
+.photo.mode-placeholder .frame:not(.filled){background:var(--tan);border:1px solid var(--rule);}
+.photo.mode-placeholder .frame:not(.filled) .frame-label{display:none;}
+.photo.mode-placeholder .frame:not(.filled) .frame-mark{display:block;}
+.photo.mode-hide .frame:not(.filled){display:none;}
+.photo.mode-hide .frame:not(.filled) ~ .frame-caption{display:none;}
+.photo.mode-hide:not(.has-photo) .frame-caption{display:none;}
+.section.all-hidden{display:none;}
+
+/* per-frame controls (screen only) */
+.frame-tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;justify-content:center;}
+.frame-tools button{
+  font-family:var(--sans);font-size:7pt;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;padding:2px 6px;border:1px solid var(--rule);
+  background:#fff;color:#8A837A;border-radius:2px;cursor:pointer;
+}
+.frame-tools button:hover{border-color:var(--orange);color:var(--orange);}
+.frame-tools button.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ---------- Q&A / PERK ---------- */
+.qa-row{display:flex;gap:calc(11px * var(--d));align-items:flex-start;}
+.qa-q{font-weight:600;color:var(--navy);}
+.perk-price{font-size:calc(15pt * var(--t));font-weight:700;color:var(--orange);line-height:1;margin:0 0 2px;}
+
+/* ---------- PUZZLE BLOCK ---------- */
+.puzzle{display:grid;grid-template-columns:2.5in 1fr 1.3in;gap:calc(12px * var(--d));align-items:start;}
+.ws-grid{display:grid;gap:2px;background:var(--rule);border:1px solid var(--rule);border-radius:2px;overflow:hidden;}
+.ws-cell{background:#fff;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:calc(10pt * var(--t));font-weight:500;color:var(--navy);cursor:pointer;user-select:none;}
+.ws-cell.armed{background:var(--teal);color:#fff;}
+.ws-cell.found{background:var(--orange);color:#fff;font-weight:600;}
+.word-bank{list-style:none;padding:0;margin:5px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:calc(9pt * var(--t));font-weight:500;letter-spacing:.05em;color:var(--navy);}
+.word-bank li{margin:0;}
+.word-bank li.found{color:var(--orange);text-decoration:line-through;}
+.ws-status{font-size:8.5pt;color:#6E6865;margin-top:5px;}
+.riddle{background:var(--tan);border-left:4px solid var(--navy);padding:calc(10px * var(--d)) calc(12px * var(--d));border-radius:2px;}
+.riddle .q{font-style:italic;color:var(--navy);}
+.btn-reveal{font-family:var(--sans);font-size:8.5pt;font-weight:600;background:transparent;color:var(--orange);border:1px solid var(--orange);border-radius:2px;padding:4px 10px;margin-top:6px;cursor:pointer;}
+.btn-reveal:hover{background:var(--orange);color:#fff;}
+.answer{display:none;margin-top:6px;font-weight:600;color:var(--navy);}
+.answer.shown{display:block;}
+.qr-block{text-align:center;}
+.qr-block img{width:var(--qr-size);height:var(--qr-size);display:block;margin:0 auto;background:#fff;image-rendering:pixelated;}
+.qr-block .qr-cap{font-size:calc(8pt * var(--t));color:#6E6865;margin-top:5px;line-height:1.35;}
+
+/* ---------- EDITABLE FIELDS ---------- */
+[contenteditable="true"]{outline:1px dashed #C6C0B6;outline-offset:2px;border-radius:1px;}
+[contenteditable="true"]:hover{outline-color:var(--orange);}
+[contenteditable="true"]:focus{outline:2px solid var(--orange);background:#FFFDF8;}
+.section-header [contenteditable="true"]{outline-offset:3px;}
+
+/* ---------- RESPONSIVE ---------- */
+@media screen and (max-width:900px){
+  .page{width:100%;min-height:0;margin:0;padding:0 18px 22px;box-shadow:none;}
+  .masthead{margin:0 -18px 14px;}
+  .footer-banner{margin:18px -18px 0;}
+  .grid-2,.grid-3,.puzzle,.focus-box{grid-template-columns:1fr;}
+  .focus-box > div + div{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:calc(10px * var(--d));}
+  .huddle{grid-template-columns:1fr;}
+  .frame.headshot{aspect-ratio:4/3;}
+  .frame.portrait{width:100%;aspect-ratio:4/3;}
+  .controls{position:static;}
+  .ctrl{width:100%;} .ctrl select,.ctrl input[type=url]{min-width:0;width:100%;}
+  .qr-block img{width:1.4in;height:1.4in;}
+}
+
+/* ---------- PRINT ---------- */
+@page{size:8.5in 11in;margin:.45in .5in;}
+@media print{
+  html,body{background:#fff;}
+  .no-print,.controls,.frame-tools{display:none !important;}
+  .page{width:auto;min-height:0;margin:0;padding:0;box-shadow:none;display:block;}
+  .page.overflowing{box-shadow:none;}
+  .page-1{page-break-after:always;break-after:page;}
+  .page-2{page-break-before:always;break-before:page;}
+  .page:last-of-type{page-break-after:auto;break-after:auto;}
+  .masthead,.footer-banner{margin-left:0;margin-right:0;}
+  .masthead{margin-top:0;}
+  .footer-banner{margin-bottom:0;margin-top:calc(12px * var(--d));}
+  .section,.card,.value-card,.focus-box,.praise,.riddle,.puzzle,.grid-2,.grid-3{page-break-inside:avoid;break-inside:avoid;}
+  [contenteditable="true"]{outline:none !important;background:transparent !important;}
+  .frame{border:1px solid var(--rule);}
+  .btn-reveal,.ws-status{display:none !important;}
+  .ws-cell.armed{background:#fff;color:var(--navy);}
+  a{text-decoration:none;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body class="draft">
+
+<!-- ======================= CONTROL BAR (screen only) ======================= -->
+<div class="controls no-print" role="region" aria-label="Newsletter setup controls">
+  <div class="ctrl">
+    <label for="titlePick">Newsletter title</label>
+    <select id="titlePick">
+      <option value="The Willow Groove">The Willow Groove</option>
+      <option value="The Monthly Grind &amp; Grape">The Monthly Grind &amp; Grape</option>
+      <option value="Estate 101">Estate 101</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label for="valuePick">Core value focus</label>
+    <select id="valuePick">
+      <option value="care">Individualized Care</option>
+      <option value="warmth">Boutique-Level Warmth</option>
+      <option value="relationships">Genuine Relationships</option>
+      <option value="detail">Excellence in Every Detail</option>
+      <option value="heart">Hospitality from the Heart</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label for="editionPick">Edition / puzzle set</label>
+    <select id="editionPick"></select>
+  </div>
+  <div class="ctrl">
+    <label for="densityPick">Fit to 2 pages</label>
+    <select id="densityPick">
+      <option value="auto">Auto-fit</option>
+      <option value="comfortable">Comfortable</option>
+      <option value="compact">Compact</option>
+      <option value="tight">Tight</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label for="qrLink">QR override (blank = estate code)</label>
+    <input id="qrLink" type="url" placeholder="Leave blank to use the uploaded QR">
+  </div>
+  <button class="btn btn-ghost" id="shuffleBtn" type="button">Shuffle grid</button>
+  <button class="btn btn-ghost" id="allHideBtn" type="button">Hide all empty</button>
+  <button class="btn btn-ghost" id="allPlaceBtn" type="button">Placeholder all empty</button>
+  <div class="ctrl ctrl-check">
+    <input type="checkbox" id="draftToggle" checked>
+    <label for="draftToggle">Mark as draft</label>
+  </div>
+  <button class="btn btn-print" id="printBtn" type="button">🖨️ Print / Save to PDF</button>
+
+  <div class="meter">
+    <span>Page 1 <b id="fit1">—</b></span>
+    <span>Page 2 <b id="fit2">—</b></span>
+    <span>Density <b id="fitLevel">—</b></span>
+    <span>Read time <b id="readTime">—</b></span>
+    <span id="meterNote"></span>
+  </div>
+</div>
+
+<!-- ============================== PAGE 1 ============================== -->
+<section class="page page-1">
+
+  <header class="masthead">
+    <div class="logo-row">
+      <img src="IWG full white rev.png" alt="The Inn at Willow Grove"
+           onerror="this.outerHTML='&lt;span class=\'logo-fallback\'&gt;The Inn at Willow Grove&lt;/span&gt;'">
+      <img src="escape-unwind-indulge-white.png" alt="Escape. Unwind. Indulge."
+           onerror="this.outerHTML='&lt;span class=\'logo-fallback\'&gt;Escape · Unwind · Indulge&lt;/span&gt;'">
+    </div>
+    <h1 id="newsletterTitle">The Willow Groove</h1>
+    <div class="rule"></div>
+    <p class="meta">Employee Newsletter &nbsp;|&nbsp; November 1, 2026 Launch Edition</p>
+    <span class="draft-tag">Draft for review</span>
+  </header>
+
+  <!-- A NOTE FROM MATT — opening content -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">The 15-Second Huddle</span></h2>
+    <div class="card bordered-navy">
+      <div class="huddle" id="huddleRow">
+        <!-- Paste a website image URL into data-fallback to use it as the standing photo -->
+        <figure class="photo" data-mode="placeholder">
+          <div class="frame headshot" data-frame="Matt Scibal headshot" data-fallback="">
+            <span class="frame-label">Click to upload<br>Matt's headshot</span>
+            <span class="frame-mark">The Inn at<br>Willow Grove</span>
+          </div>
+          <figcaption class="frame-caption">Matt Scibal, GM</figcaption>
+        </figure>
+        <div>
+          <p class="subhead" contenteditable="true">A Note from Matt</p>
+          <p contenteditable="true">Busy season is kicking our tails in the best way — weddings stacked back to back, a dining room that hasn't seen an empty table in weeks, and a spa book so full I'm pretty sure the therapists are dreaming about hot stones. This is the season that proves what we're actually made of. And it's not the linens or the view. It's <em>you</em>. Thank you for your hard work in making the guest experience special. Let's keep it up!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Focus + Core Value of the Month -->
+    <div class="value-card focus-box">
+      <div>
+        <p class="value-tag">This Month's Focus</p>
+        <p class="value-name" contenteditable="true">The Handoff</p>
+        <p contenteditable="true">Every guest note passed cleanly between shifts — front desk to butler, butler to housekeeping, housekeeping to the dining room. One guest, one story, no repeating themselves.</p>
+      </div>
+      <div>
+        <p class="value-tag">Core Value of the Month</p>
+        <p class="value-name" id="valueName">Individualized Care</p>
+        <p id="valueBody">We see every guest as unique. By listening closely, anticipating needs, and personalizing each interaction, we create experiences that feel thoughtful, intentional, and memorable.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOUTOUT WALL -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">Kudos Corner</span></h2>
+    <div class="praise">
+      <div class="group">
+        <p class="subhead dept" contenteditable="true">Front Desk</p>
+        <p class="quote" contenteditable="true">"Check-in took under two minutes and they already knew it was our anniversary."</p>
+      </div>
+      <div class="group">
+        <p class="subhead dept" contenteditable="true">Vintage Restaurant</p>
+        <p class="quote" contenteditable="true">"Our server caught a dietary restriction we forgot to put on the reservation."</p>
+      </div>
+      <div class="group">
+        <p class="subhead dept" contenteditable="true">Housekeeping</p>
+        <p class="quote" contenteditable="true">"The room was immaculate — and turndown left a note for our daughter's birthday."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIFT SNAPSHOTS -->
+  <div class="section" data-photo-section="snapshots">
+    <h2 class="section-header"><span contenteditable="true">Shift Snapshots</span></h2>
+    <div class="grid-3">
+      <figure class="photo" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 1" data-fallback="">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption" contenteditable="true">Add a caption</figcaption>
+      </figure>
+      <figure class="photo" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 2" data-fallback="">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption" contenteditable="true">Add a caption</figcaption>
+      </figure>
+      <figure class="photo" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 3" data-fallback="">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption" contenteditable="true">Add a caption</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- MILESTONES -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">Milestones &amp; Mile-Markers</span></h2>
+    <div class="grid-2">
+      <div class="card bordered-orange">
+        <p class="subhead" contenteditable="true">November Birthday Crew</p>
+        <ul class="milestone-list" contenteditable="true">
+          <li><span class="who">Pending roster refresh</span><span class="when">&mdash;</span></li>
+        </ul>
+      </div>
+      <div class="card bordered-navy">
+        <p class="subhead" contenteditable="true">Service Anniversaries</p>
+        <ul class="milestone-list" contenteditable="true">
+          <li><span class="who">Kyleah Canela</span><span class="when">Nov 1 &middot; 2 years</span></li>
+          <li><span class="who">Marcus Martinez</span><span class="when">Nov 10 &middot; 1 year</span></li>
+          <li><span class="who">Brittany Lewis</span><span class="when">Nov 13 &middot; 6 years</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================== PAGE 2 ============================== -->
+<section class="page page-2">
+
+  <!-- DEPARTMENT CORNERS -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">The Latest from the Floor</span></h2>
+    <div class="grid-2">
+      <div class="card bordered-orange">
+        <p class="subhead" contenteditable="true">Vintage Vibes — Restaurant Updates</p>
+        <p contenteditable="true">Fall menu lands mid-month: braised short rib, duck with the last estate figs, chestnut soup. Sundays add a second brunch seating through the holidays.</p>
+        <p contenteditable="true"><strong>Staff tasting:</strong> Tuesday the 10th, 3:00 pm, before service.</p>
+      </div>
+      <div class="card bordered-teal">
+        <p class="subhead" contenteditable="true">Mill House — This Season at the Spa</p>
+        <p contenteditable="true">The fireside massage is booking out fast on wedding weekends. The pumpkin-enzyme facial stays on the menu through the end of the month.</p>
+        <p contenteditable="true"><strong>Booking tip:</strong> Spa runs Wednesday to Sunday. Hold the slot rather than sending a guest away.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q&A + PERK -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">Did You Know?</span></h2>
+    <div class="grid-2">
+      <div class="card">
+        <p class="subhead" contenteditable="true">Employee Spotlight</p>
+        <div class="qa-row">
+          <figure class="photo" data-mode="placeholder">
+            <div class="frame portrait" data-frame="Q&A staff portrait" data-fallback="">
+              <span class="frame-label">Click to<br>upload</span>
+              <span class="frame-mark">IWG</span>
+            </div>
+          </figure>
+          <div>
+            <p contenteditable="true"><span class="qa-q">Who are we talking to?</span> Name, department, years on the estate.</p>
+            <p contenteditable="true"><span class="qa-q">Best part of the job?</span> Their answer here.</p>
+            <p contenteditable="true"><span class="qa-q">What guests never guess about your role?</span> Their answer here.</p>
+          </div>
+        </div>
+        <p class="card-note">Want to be featured? Tell your manager or leave a note at the front desk.</p>
+      </div>
+      <div class="card bordered-orange">
+        <p class="subhead" contenteditable="true">Employee Perks!</p>
+        <div class="qa-row">
+          <figure class="photo" data-mode="hide">
+            <div class="frame portrait" data-frame="Staycation photo" data-fallback="">
+              <span class="frame-label">Click to<br>upload</span>
+              <span class="frame-mark">IWG</span>
+            </div>
+          </figure>
+          <div>
+            <p class="perk-price">$50 / night</p>
+            <p contenteditable="true">Any employee can stay on property for $50 a night, subject to availability.</p>
+            <p contenteditable="true"><strong>To book:</strong> email Matt with your dates. Blackout on buyouts and wedding weekends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUZZLE + QR -->
+  <div class="section">
+    <h2 class="section-header"><span contenteditable="true">The Back Page</span></h2>
+    <div class="puzzle">
+
+      <div>
+        <p class="subhead" id="puzzleTitle" contenteditable="true">Estate Word Search</p>
+        <div class="ws-grid" id="wsGrid" role="grid" aria-label="Estate word search"></div>
+        <ul class="word-bank" id="wordBank"></ul>
+        <p class="card-note" id="puzzleNote"></p>
+        <p class="ws-status no-print" id="wsStatus">Click the first letter, then the last letter of a word.</p>
+      </div>
+
+      <div class="riddle">
+        <p class="subhead" id="quizHeading" contenteditable="true">Shift Riddle</p>
+        <p class="q" id="quizQ">I have a key but open no lock. I have space but no room. What am I?</p>
+        <button class="btn-reveal no-print" id="revealBtn" type="button">Reveal answer</button>
+        <p class="answer" id="quizA">A keyboard.</p>
+        <p class="card-note" id="prizeNote"></p>
+      </div>
+
+      <div class="qr-block">
+        <p class="subhead" contenteditable="true">Scan Me</p>
+        <img id="qrImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQAAAAAgH8RuAAADqklEQVR42u2dS4rlMAxFr5qaOzuo/e/OWYF6IH/k5NWk7W5oOOYRgl9yBoaLPpYccx0a9y8dG6BAgQIFChQoUKBAgQIF6h+hbIwrgjvTbeNmDN1ml+Kx5yssOyhQO6jiMZruJLvUxFVckrt7lV3yKhVv1/EKyw4K1B+Or3FnkkqVZMVNcsluc8naZI1J9Wt+hWUHBWpfg3OEHQyVFddtfl9+m7oMLcmQZQcF6rwG+/DQY3ErPsRopcaVZQcF6qwGp2krVfflSsFg5Ge6cYxJPa0hyw4K1AaqJz+b1r49cjLt9+0xGepr6Zr1FZYdFKgdO+jvkLDbPr8tfu3+bTdZdlCgNkbbX+juZew7tJnhc6YH4t+5JdF3KLyy7KBAbWmwiavKa5ofj3XpxTPKgWFBg6BA7WpwSK/Jbfy6QZySLMtNEibLDgrUhgaHrLI1TO6oeqnMLJLpOsUOggJ1yg4uprA7qNPtfIWE2WtFg6BA7WrwIcZHUWjxD3Ei8SAoUAd90belqx8s4DtgxA6CArWvwSW+S391GzfjwRE5Li4rGgQFatsXHfZuplw87RWuRnDesD8ICtRRX3SaxZQvzTOLd0o8CArUOQ0+o79Vj8Mpzf5nfgwNggK1GQ/OGLArK1vGaROrshFkfxAUqL2R+gd7v3yo0dSbeUsd/fIeXb2jof6+NIu3WXZQoPZyMq967JwpXfzS/Dp2EBSoQ6iQWDsnrTw34qNhMHoGn+WjlWUHBWob1dU3j1aL/sFUL9p6eEOSZrot1MfZhqBAHcnJzGSLlsznI2uay2Mk6mRAgTqmwYf6lqqYHCqm40aX59EgKFA7OZlRL1oWC5iv754m+gdBgTqmwZp325X1KCmbvPepF2gQFKiNkfYH+6nacc625vmidXkmjvwdiRr2B0GBOhIPSvlUmVmuVhePtE36TOAQD4ICdTAnk3uUpLVjonxIny7FbGgQFKhNDZZFYlN3SW7jmcepF2gQFKh9DeYzZJbqtTrtXd6yb8IUtWqgQB3Q4NIc8YPinsfLOPEgKFAnczKPlMvcnX/lZKZrSp0MKFCnUKkMu33nZXz/xSy+wDvSNcNNlTQ+S8GygwK1m5PJiRetYeBrC+OhXOwgKFAnNfjeK0ynqM0dQ850AgXqL6GK52+f5TDQzOzbh3fau5ZYdlCgDtjB5wlO9cc++g/GETsICtSmBrO9K2uP/GufYjnpF18UFKitYX6KdLPsoECBAgUKFChQoECBAvUfoX4DtoUm/4bdhUEAAAAASUVORK5CYII=" alt="QR code to the newsletter folder">
+        <p class="qr-cap" contenteditable="true">Newsletter archive, past editions, and submissions.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer-banner">
+    <img src="escape-unwind-indulge-white.png" alt="Escape. Unwind. Indulge."
+         onerror="this.outerHTML='&lt;div class=\'logo-fallback\' style=\'margin-bottom:6px\'&gt;Escape · Unwind · Indulge&lt;/div&gt;'">
+    <p class="hub">Schedules, forms, and everything referenced here live on the Team Hub —
+      <a href="https://sites.google.com/innatwillowgrove.com/iwgteam?usp=sharing" id="hubLink">sites.google.com/innatwillowgrove.com/iwgteam</a>
+    </p>
+    <span class="credit">Prepared by Deidre Durant, EA &nbsp;|&nbsp; The Inn at Willow Grove &nbsp;|&nbsp; Orange, Virginia</span>
+  </footer>
+
+</section>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     EDITIONS — the content that changes month to month.
+
+     The entries marked (PROPOSAL) are not approved. They exist so
+     the ideas can be shown live in a review rather than described.
+     Nothing below is committed to print until Matt says so.
+
+       words   six or more words, any length (grid widens to fit)
+       quiz    the box beside the puzzle: heading, question, answer
+       note    the line under the quiz — prize or instructions
+       answers marked [CONFIRM] still need verifying. Do not guess.
+     ============================================================ */
+  var EDITIONS = {
+
+    /* ---- APPROVED: ships as-is unless told otherwise ---- */
+    'nov2026':{label:'November 2026 \u2014 launch edition',
+      words:['HARVEST','CIDER','LINEN','HEARTH','CHEF','TABLE'],
+      quiz:{heading:'Shift Riddle',
+            q:'I am set every night and cleared every morning, yet I am never carried anywhere. What am I?',
+            a:'A table.'}},
+
+    'spare_autumn':{label:'Spare set \u2014 autumn',
+      words:['VINTAGE','BUTLER','COTTAGE','VALET','SPA','SUITE'],
+      quiz:{heading:'Shift Riddle',
+            q:'I have a key but open no lock. I have space but no room. What am I?',
+            a:'A keyboard.'}},
+
+    'dec2026':{label:'December 2026',
+      words:['GARLAND','TOAST','WREATH','MANOR','GIFT','CANDLE'],
+      quiz:{heading:'Shift Riddle',
+            q:'The more of me you take, the more you leave behind. What am I?',
+            a:'Footsteps.'}},
+
+    'jan2027':{label:'January 2027',
+      words:['WINTER','GROVE','ORANGE','LOBBY','KEY','MILL'],
+      quiz:{heading:'Shift Riddle',
+            q:'I run all day at the inn but never move a step. What am I?',
+            a:'A faucet.'}},
+
+    /* ---- PROPOSAL A: estate trivia in place of the riddle ----
+       Matt's idea — a question about the property instead of a
+       generic riddle. Needs real answers before it could run. */
+    'prop_trivia':{label:'PROPOSAL \u2014 Estate trivia instead of a riddle',
+      words:['VINTAGE','BUTLER','COTTAGE','VALET','SPA','SUITE'],
+      quiz:{heading:'Estate Trivia',
+            q:'Who was the original owner of the property?',
+            a:'[CONFIRM \u2014 do not print until verified]'},
+      note:'Answer the trivia question and finish the word search, then scan the code to submit.'},
+
+    /* ---- PROPOSAL B: mission statement across three editions ----
+       The statement runs ~70 words, too long for one grid. This
+       splits it into three parts; staff keep their sheets and
+       assemble the whole thing at the end of the run. */
+    'prop_mission1':{label:'PROPOSAL \u2014 Mission series, part 1 of 3',
+      puzzleTitle:'Find Our Mission \u2014 Part 1',
+      puzzleNote:'Part 1 of 3. Keep your sheet \u2014 the full statement comes together over three editions.',
+      words:['ELEVATE','SERVICE','CARE','GENUINE','ROOTED','AUTHENTIC'],
+      quiz:{heading:'Core Value Check',
+            q:'Which of our five core values is about anticipating a guest\u2019s needs before they ask?',
+            a:'Individualized Care.'}},
+
+    'prop_mission2':{label:'PROPOSAL \u2014 Mission series, part 2 of 3',
+      puzzleTitle:'Find Our Mission \u2014 Part 2',
+      puzzleNote:'Part 2 of 3. Keep your sheet \u2014 one part to go.',
+      words:['REFINED','COMFORT','QUALITY','STAYS','PERSONAL','ATTENTIVE'],
+      quiz:{heading:'Core Value Check',
+            q:'Which core value says no detail is too small to matter?',
+            a:'Excellence in Every Detail.'}},
+
+    'prop_mission3':{label:'PROPOSAL \u2014 Mission series, part 3 of 3',
+      puzzleTitle:'Find Our Mission \u2014 Part 3',
+      puzzleNote:'Final part. Put all three sheets together, write out the full mission statement, and submit it.',
+      words:['BUILD','GUESTS','PEOPLE','VISIT','MEMORY','RETURN'],
+      quiz:{heading:'Core Value Check',
+            q:'Name any two of our five core values.',
+            a:'Any two of: Individualized Care, Boutique-Level Warmth, Genuine Relationships, Excellence in Every Detail, Hospitality from the Heart.'},
+      note:'First correct full mission statement wins a $25 gift card.'}
+  };
+
+  var BASE_COLS = 8, COLS = 8, MIN_ROWS = 6, MAX_ROWS = 9;
+
+  /* Density steps the auto-fit engine walks through, loosest first.
+     d = spacing scale, t = type scale (1 = exactly the brand spec). */
+  var STEPS = [
+    {name:'Comfortable', d:1.00, t:1.00},
+    {name:'Compact',     d:0.86, t:0.98},
+    {name:'Tight',       d:0.74, t:0.95},
+    {name:'Very tight',  d:0.62, t:0.92}
+  ];
+  var PAGE_PX = 11 * 96;          // 11in at 96 css px per inch
+  var WPM = 200;                  // skim speed for staff on their feet
+  /* ========================= END SETTINGS ========================= */
+
+  var $ = function(id){ return document.getElementById(id); };
+  var root = document.documentElement;
+
+  /* ---------- Title ---------- */
+  var titlePick = $('titlePick'), titleEl = $('newsletterTitle');
+  titlePick.addEventListener('change', function(){
+    titleEl.textContent = titlePick.value;
+    document.title = titlePick.value + ' — The Inn at Willow Grove | November 1, 2026 Launch Edition';
+    refit();
+  });
+
+  /* ---------- Core values ---------- */
+  /* IWG's five core values, wording per the Mission & Core Values sheet. */
+  var VALUES = {
+    care:{name:'Individualized Care',
+      body:'We see every guest as unique. By listening closely, anticipating needs, and personalizing each interaction, we create experiences that feel thoughtful, intentional, and memorable.'},
+    warmth:{name:'Boutique-Level Warmth',
+      body:'We deliver a level of warmth, familiarity, and attention to detail that large properties simply cannot match. Our size allows us to be personal, flexible, and deeply attentive in every moment.'},
+    relationships:{name:'Genuine Relationships',
+      body:'Hospitality is built on connection. By forming real, long-lasting relationships, we create a sense of comfort, trust, and belonging that brings guests back again and again.'},
+    detail:{name:'Excellence in Every Detail',
+      body:'From the cleanliness of a room to the artistry of a plate, nothing is too small to matter. Details are what transform good stays into unforgettable ones.'},
+    heart:{name:'Hospitality from the Heart',
+      body:'True hospitality starts with sincerity. We serve with heart, kindness, and integrity, knowing that genuine care is felt, remembered, and valued by every guest we welcome.'}
+  };
+  $('valuePick').addEventListener('change', function(){
+    var v = VALUES[this.value];
+    $('valueName').textContent = v.name;
+    $('valueBody').textContent = v.body;
+    refit();
+  });
+
+  /* ---------- Print + draft ---------- */
+  $('printBtn').addEventListener('click', function(){ refit(); window.print(); });
+  $('draftToggle').addEventListener('change', function(){
+    document.body.classList.toggle('draft', this.checked); refit();
+  });
+
+  /* ---------- QR override ---------- */
+  var qrImage = $('qrImage'), estateQR = qrImage.src;
+  $('qrLink').addEventListener('change', function(){
+    var url = this.value.trim();
+    qrImage.src = url
+      ? 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=' + encodeURIComponent(url)
+      : estateQR;
+  });
+
+  /* ============================================================
+     PHOTO FRAMES — each frame carries its own state:
+     'photo' (uploaded/fallback image), 'placeholder', or 'hide'.
+     Nothing here is global; the two bar buttons are bulk shortcuts.
+     ============================================================ */
+  var photos = Array.prototype.slice.call(document.querySelectorAll('.photo'));
+
+  photos.forEach(function(wrap){
+    var frame = wrap.querySelector('.frame');
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*'; input.className = 'no-print';
+    frame.appendChild(input);
+
+    frame.setAttribute('tabindex','0');
+    frame.setAttribute('role','button');
+    frame.setAttribute('aria-label','Upload ' + (frame.dataset.frame || 'photo'));
+    frame.addEventListener('click', function(){ input.click(); });
+    frame.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); input.click(); }
+    });
+    input.addEventListener('change', function(){
+      var file = input.files && input.files[0];
+      if(!file){ return; }
+      var reader = new FileReader();
+      reader.onload = function(ev){ setPhoto(wrap, ev.target.result); };
+      reader.readAsDataURL(file);
+    });
+
+    // per-frame controls
+    var tools = document.createElement('div');
+    tools.className = 'frame-tools no-print';
+    tools.innerHTML =
+      '<button type="button" data-act="upload">Photo</button>' +
+      '<button type="button" data-act="placeholder">Placeholder</button>' +
+      '<button type="button" data-act="hide">Hide</button>';
+    wrap.appendChild(tools);
+    tools.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b){ return; }
+      var act = b.dataset.act;
+      if(act === 'upload'){
+        if(wrap.classList.contains('has-photo')){ clearPhoto(wrap); }
+        else { input.click(); }
+        return;
+      }
+      wrap.dataset.mode = act;
+      applyState();
+    });
+
+    var fb = (frame.dataset.fallback || '').trim();
+    if(fb){ setPhoto(wrap, fb); }
+  });
+
+  function setPhoto(wrap, src){
+    var frame = wrap.querySelector('.frame');
+    frame.style.backgroundImage = 'url("' + src + '")';
+    frame.classList.add('filled');
+    wrap.classList.add('has-photo');
+    applyState();
+  }
+  function clearPhoto(wrap){
+    var frame = wrap.querySelector('.frame');
+    frame.style.backgroundImage = '';
+    frame.classList.remove('filled');
+    wrap.classList.remove('has-photo');
+    applyState();
+  }
+
+  function applyState(){
+    photos.forEach(function(wrap){
+      var mode = wrap.dataset.mode || 'hide';
+      wrap.classList.toggle('mode-hide', mode === 'hide');
+      wrap.classList.toggle('mode-placeholder', mode === 'placeholder');
+      var has = wrap.classList.contains('has-photo');
+      Array.prototype.forEach.call(wrap.querySelectorAll('.frame-tools button'), function(b){
+        var act = b.dataset.act;
+        b.classList.toggle('active', has ? act === 'upload' : act === mode);
+        if(act === 'upload'){ b.textContent = has ? 'Remove' : 'Photo'; }
+      });
+    });
+
+    // a photo-only section disappears when every frame in it is hidden and empty
+    Array.prototype.forEach.call(document.querySelectorAll('[data-photo-section]'), function(sec){
+      var wraps = Array.prototype.slice.call(sec.querySelectorAll('.photo'));
+      var visible = wraps.filter(function(w){
+        return w.classList.contains('has-photo') || (w.dataset.mode || 'hide') !== 'hide';
+      });
+      sec.classList.toggle('all-hidden', wraps.length > 0 && visible.length === 0);
+    });
+
+    // the GM huddle goes full width only when its frame is both empty and hidden
+    var huddle = $('huddleRow'), wrap = huddle.querySelector('.photo');
+    var gone = !wrap.classList.contains('has-photo') && (wrap.dataset.mode || 'hide') === 'hide';
+    huddle.classList.toggle('no-photo', gone);
+
+    refit();
+  }
+
+  $('allHideBtn').addEventListener('click', function(){
+    photos.forEach(function(w){ if(!w.classList.contains('has-photo')){ w.dataset.mode = 'hide'; } });
+    applyState();
+  });
+  $('allPlaceBtn').addEventListener('click', function(){
+    photos.forEach(function(w){ if(!w.classList.contains('has-photo')){ w.dataset.mode = 'placeholder'; } });
+    applyState();
+  });
+
+  /* ---------- Trivia reveal ---------- */
+  var revealBtn = $('revealBtn'), answerEl = $('quizA');
+  revealBtn.addEventListener('click', function(){
+    var shown = answerEl.classList.toggle('shown');
+    revealBtn.textContent = shown ? 'Hide answer' : 'Reveal answer';
+  });
+
+  /* ---------- Word search ---------- */
+  var DIRS = [[0,1],[1,0],[1,1],[-1,1]];
+  var FILLER = 'ABCDEFGHIKLMNOPRSTUVWY';
+  var placements = [], gridLetters = [], cells = {};
+
+  function buildGrid(words){
+    var clean = words.map(function(w){ return w.toUpperCase().replace(/[^A-Z]/g,''); })
+                     .filter(function(w){ return w.length > 1; });
+    // widen the grid if any word is longer than the default width
+    COLS = Math.max(BASE_COLS, Math.max.apply(null, clean.map(function(w){ return w.length; })));
+    for(var r = MIN_ROWS; r <= MAX_ROWS; r++){
+      for(var a = 0; a < 250; a++){
+        var res = tryFill(clean, r);
+        if(res){ gridLetters = res.grid; placements = res.placed; return; }
+      }
+    }
+    gridLetters = []; placements = [];
+    for(var i = 0; i < Math.max(MIN_ROWS, clean.length); i++){ gridLetters.push(new Array(COLS).fill('')); }
+    clean.forEach(function(w, i){
+      for(var c = 0; c < w.length; c++){ gridLetters[i][c] = w[c]; }
+      placements.push({word:w, r:i, c:0, dr:0, dc:1});
+    });
+  }
+  function tryFill(words, nRows){
+    var g = [], placed = [], i, j;
+    for(i = 0; i < nRows; i++){ g.push(new Array(COLS).fill('')); }
+    var ordered = words.slice().sort(function(a,b){ return b.length - a.length; });
+    for(i = 0; i < ordered.length; i++){
+      var w = ordered[i], done = false;
+      for(j = 0; j < 400 && !done; j++){
+        var d = DIRS[Math.floor(Math.random()*DIRS.length)];
+        var back = Math.random() < 0.3;
+        var dr = back ? -d[0] : d[0], dc = back ? -d[1] : d[1];
+        var r0 = Math.floor(Math.random()*nRows), c0 = Math.floor(Math.random()*COLS);
+        if(fits(g, w, r0, c0, dr, dc, nRows)){
+          for(var k = 0; k < w.length; k++){ g[r0+dr*k][c0+dc*k] = w[k]; }
+          placed.push({word:w, r:r0, c:c0, dr:dr, dc:dc});
+          done = true;
+        }
+      }
+      if(!done){ return null; }
+    }
+    return {grid:g, placed:placed};
+  }
+  function fits(g, w, r, c, dr, dc, nRows){
+    var endR = r + dr*(w.length-1), endC = c + dc*(w.length-1);
+    if(endR < 0 || endR >= nRows || endC < 0 || endC >= COLS){ return false; }
+    for(var k = 0; k < w.length; k++){
+      var cur = g[r+dr*k][c+dc*k];
+      if(cur !== '' && cur !== w[k]){ return false; }
+    }
+    return true;
+  }
+
+  var grid = $('wsGrid'), bank = $('wordBank'), status = $('wsStatus');
+  var armed = null, found = {};
+
+  function render(){
+    for(var r = 0; r < gridLetters.length; r++){
+      for(var c = 0; c < COLS; c++){
+        if(!gridLetters[r][c]){ gridLetters[r][c] = FILLER[Math.floor(Math.random()*FILLER.length)]; }
+      }
+    }
+    grid.style.gridTemplateColumns = 'repeat(' + COLS + ', 1fr)';
+    grid.innerHTML = ''; bank.innerHTML = '';
+    cells = {}; armed = null; found = {};
+    gridLetters.forEach(function(rowArr, r){
+      rowArr.forEach(function(letter, c){
+        var cell = document.createElement('div');
+        cell.className = 'ws-cell';
+        cell.textContent = letter;
+        cell.setAttribute('role','gridcell');
+        cell.setAttribute('tabindex','0');
+        cell.addEventListener('click', function(){ pick(r, c, cell); });
+        cell.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(r, c, cell); }
+        });
+        grid.appendChild(cell);
+        cells[r + ':' + c] = cell;
+      });
+    });
+    placements.forEach(function(p){
+      var li = document.createElement('li');
+      li.textContent = p.word; li.dataset.word = p.word; bank.appendChild(li);
+    });
+    say('Click the first letter, then the last letter of a word.');
+    refit();
+  }
+  function clearArmed(){ if(armed){ armed.el.classList.remove('armed'); armed = null; } }
+  function pick(r, c, el){
+    if(!armed){ armed = {r:r,c:c,el:el}; el.classList.add('armed'); say('Now click the last letter.'); return; }
+    if(armed.r === r && armed.c === c){ clearArmed(); say('Selection cleared.'); return; }
+    var start = armed; clearArmed();
+    var hit = match(start.r, start.c, r, c);
+    if(hit){
+      markFound(hit);
+      var left = placements.length - Object.keys(found).length;
+      say(left ? hit.word + ' found. ' + left + ' to go.' : 'All found. Bring this to the front desk.');
+    } else { say('Not one of them. Try again.'); }
+  }
+  function match(r1,c1,r2,c2){
+    for(var i = 0; i < placements.length; i++){
+      var p = placements[i];
+      if(found[p.word]){ continue; }
+      var endR = p.r + p.dr*(p.word.length-1), endC = p.c + p.dc*(p.word.length-1);
+      if((r1===p.r&&c1===p.c&&r2===endR&&c2===endC)||(r2===p.r&&c2===p.c&&r1===endR&&c1===endC)){ return p; }
+    }
+    return null;
+  }
+  function markFound(p){
+    for(var i = 0; i < p.word.length; i++){
+      var key = (p.r + p.dr*i) + ':' + (p.c + p.dc*i);
+      if(cells[key]){ cells[key].classList.add('found'); }
+    }
+    found[p.word] = true;
+    var li = bank.querySelector('[data-word="' + p.word + '"]');
+    if(li){ li.classList.add('found'); }
+  }
+  function say(msg){ status.textContent = msg; }
+
+  /* ---------- Editions ---------- */
+  var editionPick = $('editionPick');
+  Object.keys(EDITIONS).forEach(function(key){
+    var opt = document.createElement('option');
+    opt.value = key; opt.textContent = EDITIONS[key].label;
+    editionPick.appendChild(opt);
+  });
+  function loadEdition(key){
+    var ed = EDITIONS[key]; if(!ed){ return; }
+    buildGrid(ed.words); render();
+    $('puzzleTitle').textContent = ed.puzzleTitle || 'Estate Word Search';
+    $('puzzleNote').textContent  = ed.puzzleNote || '';
+    $('puzzleNote').style.display = ed.puzzleNote ? '' : 'none';
+    $('quizHeading').textContent = ed.quiz.heading;
+    $('quizQ').textContent = ed.quiz.q;
+    answerEl.textContent = ed.quiz.a;
+    $('prizeNote').textContent = ed.note || '';
+    $('prizeNote').style.display = ed.note ? '' : 'none';
+    answerEl.classList.remove('shown');
+    revealBtn.textContent = 'Reveal answer';
+  }
+  editionPick.addEventListener('change', function(){ loadEdition(this.value); });
+  $('shuffleBtn').addEventListener('click', function(){
+    buildGrid(EDITIONS[editionPick.value].words); render();
+  });
+
+  /* ============================================================
+     AUTO-FIT — walks the density steps until both pages fit on
+     one sheet each, then reports where it landed.
+     ============================================================ */
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var densityPick = $('densityPick');
+  var fitting = false;
+
+  function setStep(step){
+    root.style.setProperty('--d', step.d);
+    root.style.setProperty('--t', step.t);
+  }
+  function overflowOf(page){
+    // .page has min-height 11in on screen, so anything above that is overflow
+    return page.scrollHeight - PAGE_PX;
+  }
+  function measure(){
+    return pages.map(function(p){ return Math.round(overflowOf(p)); });
+  }
+
+  function refit(){
+    if(fitting){ return; }
+    fitting = true;
+    requestAnimationFrame(function(){
+      var mode = densityPick.value, chosen, over;
+      if(mode === 'auto'){
+        for(var i = 0; i < STEPS.length; i++){
+          setStep(STEPS[i]); chosen = STEPS[i];
+          over = measure();
+          if(over[0] <= 0 && over[1] <= 0){ break; }
+        }
+      } else {
+        var map = {comfortable:0, compact:1, tight:2};
+        chosen = STEPS[map[mode] || 0];
+        setStep(chosen);
+        over = measure();
+      }
+      report(chosen, over);
+      fitting = false;
+    });
+  }
+
+  function report(step, over){
+    [$('fit1'), $('fit2')].forEach(function(el, i){
+      var px = over[i];
+      var fits = px <= 0;
+      el.textContent = fits ? 'fits' : 'over by ' + (px/96).toFixed(2) + '"';
+      el.className = fits ? 'ok' : (px < 60 ? 'warn' : 'bad');
+      pages[i].classList.toggle('overflowing', !fits);
+    });
+    $('fitLevel').textContent = step.name;
+
+    // read time — grid letters and word bank excluded
+    var words = 0;
+    pages.forEach(function(p){
+      var clone = p.cloneNode(true);
+      Array.prototype.forEach.call(clone.querySelectorAll('#wsGrid,#wordBank,.ws-status,.frame-tools,.no-print'), function(n){ n.remove(); });
+      words += (clone.textContent.trim().match(/\S+/g) || []).length;
+    });
+    var secs = Math.round(words / WPM * 60);
+    var rt = $('readTime');
+    rt.textContent = words + ' words · ' + (secs < 90 ? secs + ' sec' : (secs/60).toFixed(1) + ' min');
+    rt.className = secs <= 75 ? 'ok' : (secs <= 120 ? 'warn' : 'bad');
+    $('meterNote').textContent = (over[0] > 0 || over[1] > 0)
+      ? 'Trim a section or drop a photo — content is past 2 pages.'
+      : '';
+  }
+
+  densityPick.addEventListener('change', refit);
+  window.addEventListener('resize', refit);
+  window.addEventListener('beforeprint', refit);
+  document.addEventListener('input', function(e){
+    if(e.target.isContentEditable){ refit(); }
+  });
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(refit); }
+
+  /* ---------- Caption placeholders stay out of the print ---------- */
+  var PLACEHOLDERS = ['add a caption',''];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.forEach.call(document.querySelectorAll('.frame-caption'), function(cap){
+      if(PLACEHOLDERS.indexOf(cap.textContent.trim().toLowerCase()) !== -1){
+        cap.dataset.printHidden = '1'; cap.style.display = 'none';
+      }
+    });
+  });
+  window.addEventListener('afterprint', function(){
+    Array.prototype.forEach.call(document.querySelectorAll('.frame-caption[data-print-hidden]'), function(cap){
+      cap.style.display = ''; delete cap.dataset.printHidden;
+    });
+  });
+
+  /* ---------- Boot ---------- */
+  loadEdition(editionPick.value);
+  applyState();
+  window.addEventListener('load', refit);
+})();
+</script>
+
+</body>
+</html>
