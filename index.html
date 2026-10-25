@@ -58,11 +58,13 @@ a{color:var(--orange);}
 }
 .ctrl{display:flex;flex-direction:column;gap:3px;}
 .ctrl label{font-size:8pt;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);}
-.ctrl select,.ctrl input[type=url]{
+.ctrl select,.ctrl input[type=url],.ctrl input[type=text]{
   font-family:var(--sans);font-size:9.5pt;padding:6px 8px;border:1px solid #4A5468;
   border-radius:2px;background:#fff;color:var(--body);min-width:180px;
 }
 .ctrl input[type=url]{min-width:230px;}
+.ctrl input[type=text]{min-width:230px;}
+.ctrl-wide input[type=text]{min-width:330px;}
 .ctrl-check{flex-direction:row;align-items:center;gap:6px;padding-bottom:7px;}
 .ctrl-check label{text-transform:none;letter-spacing:.03em;font-size:9pt;color:#fff;font-weight:500;}
 .btn{font-family:var(--sans);font-size:9.5pt;font-weight:600;border-radius:2px;padding:9px 16px;cursor:pointer;letter-spacing:.03em;border:1px solid transparent;}
@@ -225,7 +227,7 @@ body.draft .draft-tag{display:block;}
   .frame.headshot{aspect-ratio:4/3;}
   .frame.portrait{width:100%;aspect-ratio:4/3;}
   .controls{position:static;}
-  .ctrl{width:100%;} .ctrl select,.ctrl input[type=url]{min-width:0;width:100%;}
+  .ctrl{width:100%;} .ctrl select,.ctrl input[type=url],.ctrl input[type=text]{min-width:0;width:100%;}
   .qr-block img{width:1.4in;height:1.4in;}
 }
 
@@ -295,6 +297,19 @@ body.reader .frame{cursor:default;}
     <label for="qrLink">QR override (blank = estate code)</label>
     <input id="qrLink" type="url" placeholder="Leave blank to use the uploaded QR">
   </div>
+  <div class="ctrl ctrl-wide">
+    <label for="wordsInput">Puzzle words — type your own, separated by commas</label>
+    <input id="wordsInput" type="text" placeholder="HARVEST, CIDER, LINEN, HEARTH, CHEF, TABLE">
+  </div>
+  <div class="ctrl ctrl-wide">
+    <label for="quizQInput">Riddle or trivia question</label>
+    <input id="quizQInput" type="text">
+  </div>
+  <div class="ctrl">
+    <label for="quizAInput">Answer</label>
+    <input id="quizAInput" type="text">
+  </div>
+  <button class="btn btn-ghost" id="applyPuzzle" type="button">Apply puzzle</button>
   <button class="btn btn-ghost" id="shuffleBtn" type="button">Shuffle grid</button>
   <button class="btn btn-ghost" id="allHideBtn" type="button">Hide all empty</button>
   <button class="btn btn-ghost" id="allPlaceBtn" type="button">Placeholder all empty</button>
@@ -639,8 +654,19 @@ body.reader .frame{cursor:default;}
        ?draft=1        reader edition with the Draft for review tag
      ============================================================ */
   var PARAMS = new URLSearchParams(window.location.search);
-  var EDIT   = PARAMS.has('edit');
   var DRAFT  = PARAMS.has('draft');
+
+  /* Edit mode sticks once turned on, so the plain URL keeps the toolkit
+     on this browser. ?edit=0 turns it off again. Staff never visit
+     ?edit=1, so they never get it. */
+  var EDIT;
+  try {
+    if(PARAMS.get('edit') === '0'){ window.localStorage.removeItem('iwg_edit'); EDIT = false; }
+    else if(PARAMS.has('edit'))   { window.localStorage.setItem('iwg_edit','1'); EDIT = true; }
+    else                          { EDIT = window.localStorage.getItem('iwg_edit') === '1'; }
+  } catch(err) {
+    EDIT = PARAMS.has('edit') && PARAMS.get('edit') !== '0';
+  }
 
   document.body.classList.toggle('reader', !EDIT);
   if(EDIT || DRAFT){ document.body.classList.add('draft'); }
@@ -954,14 +980,54 @@ body.reader .frame{cursor:default;}
     $('quizHeading').textContent = ed.quiz.heading;
     $('quizQ').textContent = ed.quiz.q;
     answerEl.textContent = ed.quiz.a;
+    if(EDIT){ fillInputs(ed); }
     $('prizeNote').textContent = ed.note || '';
     $('prizeNote').style.display = ed.note ? '' : 'none';
     answerEl.classList.remove('shown');
     revealBtn.textContent = 'Reveal answer';
   }
   editionPick.addEventListener('change', function(){ loadEdition(this.value); });
+
+  /* ---------- authoring: type your own puzzle, no code needed ---------- */
+  var wordsInput = $('wordsInput'), quizQInput = $('quizQInput'), quizAInput = $('quizAInput');
+
+  function fillInputs(ed){
+    wordsInput.value = ed.words.join(', ');
+    quizQInput.value = ed.quiz.q;
+    quizAInput.value = ed.quiz.a;
+  }
+
+  function currentWords(){
+    return wordsInput.value.split(',')
+      .map(function(s){ return s.trim().toUpperCase().replace(/[^A-Z]/g,''); })
+      .filter(function(s){ return s.length > 1; });
+  }
+
+  function applyPuzzle(){
+    var ws = currentWords();
+    if(ws.length < 2){
+      say('Enter at least two words, separated by commas.');
+      return;
+    }
+    buildGrid(ws); render();
+    $('quizQ').textContent = quizQInput.value;
+    answerEl.textContent  = quizAInput.value;
+    answerEl.classList.remove('shown');
+    revealBtn.textContent = 'Reveal answer';
+    say(ws.length + ' words placed. Click the first letter, then the last letter of a word.');
+  }
+
+  $('applyPuzzle').addEventListener('click', applyPuzzle);
+  [wordsInput, quizQInput, quizAInput].forEach(function(el){
+    el.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); applyPuzzle(); }
+    });
+  });
+
   $('shuffleBtn').addEventListener('click', function(){
-    buildGrid(EDITIONS[editionPick.value].words); render();
+    var ws = currentWords();
+    buildGrid(ws.length > 1 ? ws : EDITIONS[editionPick.value].words);
+    render();
   });
 
   /* ============================================================
