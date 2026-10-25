@@ -317,7 +317,8 @@ body.reader .frame{cursor:default;}
     <input type="checkbox" id="draftToggle" checked>
     <label for="draftToggle">Mark as draft</label>
   </div>
-  <button class="btn btn-print" id="printBtn" type="button">🖨️ Print / Save to PDF</button>
+  <button class="btn btn-print" id="printBtn" type="button">⬇ Download PDF</button>
+  <button class="btn btn-print" id="htmlBtn" type="button">⬇ Download HTML</button>
 
   <div class="meter">
     <span>Page 1 <b id="fit1">—</b></span>
@@ -325,6 +326,7 @@ body.reader .frame{cursor:default;}
     <span>Density <b id="fitLevel">—</b></span>
     <span>Read time <b id="readTime">—</b></span>
     <span id="meterNote"></span>
+    <span>PDF opens your browser's print dialog — choose “Save as PDF”. HTML downloads the staff edition, ready to commit as index.html.</span>
   </div>
 </div>
 
@@ -1105,6 +1107,103 @@ body.reader .frame{cursor:default;}
     if(e.target.isContentEditable){ refit(); }
   });
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(refit); }
+
+  /* ============================================================
+     EXPORT — download the staff edition as a standalone file.
+     Everything on screen right now is baked in: the puzzle grid
+     exactly as placed, the riddle, the photos, and every edit made
+     in the page. The builder toolkit is stripped out.
+     ============================================================ */
+
+  var READER_JS = [
+    '(function(){',
+    ' var D=window.__IWG__||{},cells={},armed=null,found={};',
+    ' var grid=document.getElementById("wsGrid"),bank=document.getElementById("wordBank"),',
+    '     st=document.getElementById("wsStatus");',
+    ' function say(m){ if(st) st.textContent=m; }',
+    ' if(grid&&D.grid){',
+    '  grid.style.gridTemplateColumns="repeat("+D.cols+", 1fr)"; grid.innerHTML="";',
+    '  D.grid.forEach(function(row,r){ row.forEach(function(ch,c){',
+    '   var el=document.createElement("div"); el.className="ws-cell"; el.textContent=ch;',
+    '   el.setAttribute("role","gridcell"); el.setAttribute("tabindex","0");',
+    '   el.addEventListener("click",function(){pick(r,c,el);});',
+    '   el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(r,c,el);}});',
+    '   grid.appendChild(el); cells[r+":"+c]=el; }); });',
+    ' }',
+    ' if(bank&&D.placements){ bank.innerHTML="";',
+    '  D.placements.forEach(function(p){ var li=document.createElement("li");',
+    '   li.textContent=p.word; li.setAttribute("data-word",p.word); bank.appendChild(li); }); }',
+    ' function pick(r,c,el){',
+    '  if(!armed){armed={r:r,c:c,el:el};el.classList.add("armed");say("Now click the last letter.");return;}',
+    '  if(armed.r===r&&armed.c===c){armed.el.classList.remove("armed");armed=null;say("Selection cleared.");return;}',
+    '  var s=armed; s.el.classList.remove("armed"); armed=null;',
+    '  var hit=match(s.r,s.c,r,c);',
+    '  if(hit){ mark(hit); var left=D.placements.length-Object.keys(found).length;',
+    '   say(left?hit.word+" found. "+left+" to go.":"All found. Nicely done."); }',
+    '  else { say("Not one of them. Try again."); } }',
+    ' function match(r1,c1,r2,c2){ for(var i=0;i<D.placements.length;i++){ var p=D.placements[i];',
+    '   if(found[p.word])continue;',
+    '   var eR=p.r+p.dr*(p.word.length-1),eC=p.c+p.dc*(p.word.length-1);',
+    '   if((r1===p.r&&c1===p.c&&r2===eR&&c2===eC)||(r2===p.r&&c2===p.c&&r1===eR&&c1===eC))return p;',
+    '  } return null; }',
+    ' function mark(p){ for(var i=0;i<p.word.length;i++){',
+    '   var k=(p.r+p.dr*i)+":"+(p.c+p.dc*i); if(cells[k])cells[k].classList.add("found"); }',
+    '  found[p.word]=true;',
+    '  var li=bank&&bank.querySelector(\'[data-word="\'+p.word+\'"]\'); if(li)li.classList.add("found"); }',
+    ' var rb=document.getElementById("revealBtn"),ra=document.getElementById("quizA");',
+    ' if(rb&&ra){ rb.addEventListener("click",function(){',
+    '  var sh=ra.classList.toggle("shown"); rb.textContent=sh?"Hide answer":"Reveal answer"; }); }',
+    ' var pages=[].slice.call(document.querySelectorAll(".page")),',
+    '     ST=[[1,1],[0.86,0.98],[0.74,0.95],[0.62,0.92]],R=document.documentElement,busy=false;',
+    ' function refit(){ if(busy)return; busy=true; requestAnimationFrame(function(){',
+    '  for(var i=0;i<ST.length;i++){ R.style.setProperty("--d",ST[i][0]); R.style.setProperty("--t",ST[i][1]);',
+    '   var o=pages.map(function(p){return p.scrollHeight-1056;});',
+    '   if(o[0]<=0&&o[1]<=0)break; } busy=false; }); }',
+    ' window.addEventListener("resize",refit); window.addEventListener("beforeprint",refit);',
+    ' if(document.fonts&&document.fonts.ready){document.fonts.ready.then(refit);}',
+    ' window.addEventListener("load",refit); refit();',
+    ' say("Click the first letter, then the last letter of a word.");',
+    '})();'
+  ].join('\n');
+
+  function downloadReader(){
+    var clone = document.documentElement.cloneNode(true);
+
+    var bar = clone.querySelector('.controls');
+    if(bar){ bar.parentNode.removeChild(bar); }
+    ['.frame-tools', '.frame input[type=file]'].forEach(function(sel){
+      Array.prototype.forEach.call(clone.querySelectorAll(sel), function(el){
+        el.parentNode.removeChild(el);
+      });
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){
+      el.removeAttribute('contenteditable');
+    });
+
+    var cBody = clone.querySelector('body');
+    cBody.className = 'reader' + (document.body.classList.contains('draft') ? ' draft' : '');
+
+    var old = clone.querySelector('script');
+    if(old){ old.parentNode.removeChild(old); }
+
+    var baked = document.createElement('script');
+    baked.textContent = 'window.__IWG__=' +
+      JSON.stringify({ grid: gridLetters, placements: placements, cols: COLS }) + ';\n' + READER_JS;
+    cBody.appendChild(baked);
+
+    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'index.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+    $('meterNote').textContent = 'Staff edition downloaded as index.html — commit it to GitHub.';
+  }
+
+  $('htmlBtn').addEventListener('click', downloadReader);
 
   /* ---------- Caption placeholders stay out of the print ---------- */
   var PLACEHOLDERS = ['add a caption',''];
