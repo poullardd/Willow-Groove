@@ -317,6 +317,10 @@ body.reader .frame{cursor:default;}
     <input type="checkbox" id="draftToggle">
     <label for="draftToggle">Mark as draft</label>
   </div>
+  <div class="ctrl">
+    <label for="editionCode">Edition code (filename)</label>
+    <input id="editionCode" type="text" value="2026-11" size="8">
+  </div>
   <button class="btn btn-print" id="printBtn" type="button">⬇ Download PDF</button>
   <button class="btn btn-print" id="htmlBtn" type="button">⬇ Download HTML</button>
 
@@ -326,7 +330,7 @@ body.reader .frame{cursor:default;}
     <span>Density <b id="fitLevel">—</b></span>
     <span>Read time <b id="readTime">—</b></span>
     <span id="meterNote"></span>
-    <span>PDF opens your browser's print dialog — choose “Save as PDF”. HTML downloads the read-only staff edition. Add <code>?reader=1</code> to the address to preview it first.</span>
+    <span>PDF opens your print dialog — choose “Save as PDF”. HTML downloads the staff edition under its own dated name, so it can never overwrite this builder. Add <code>?reader=1</code> to preview it first.</span>
   </div>
 </div>
 
@@ -1192,12 +1196,13 @@ body.reader .frame{cursor:default;}
     var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'index.html';
+    var code = ($('editionCode').value || '').trim().replace(/[^0-9A-Za-z-]/g,'') || 'edition';
+    a.download = 'the-willow-groove-' + code + '.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
-    $('meterNote').textContent = 'Staff edition downloaded as index.html — commit it to GitHub.';
+    $('meterNote').textContent = 'Downloaded ' + a.download + ' — upload it to the repository root.';
   }
 
   $('htmlBtn').addEventListener('click', downloadReader);
