@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" style="--d: 0.86; --t: 0.98;"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Inn at Willow Grove — Staff Newsletter | November 1, 2026 Launch Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE INN AT WILLOW GROVE — STAFF NEWSLETTER  (v3 draft)
+   Single file: 2-page print (8.5x11) + responsive web
+   Prepared by Deidre Durant, EA
+   ------------------------------------------------------------
+   MONTHLY UPDATES: see the EDITIONS block in the script below.
+   PHOTOS: each frame is set individually — upload, placeholder,
+   or hide. See .frame-tools under each frame on screen.
+   FIT: the auto-fit engine keeps the piece to exactly 2 pages.
+   ============================================================ */
+
+:root{
+  --orange:#CE5531;
+  --navy:#2A3447;
+  --teal:#76C3C4;
+  --black:#030202;
+  --grey:#F5F4F0;
+  --tan:#FDF8EE;
+  --body:#3F3B3B;
+  --rule:#DCD8D0;
+  --qr-size:1.15in;        /* printed QR size — keep between 1in and 1.25in */
+  --d:1;                   /* spacing density  — set by the auto-fit engine */
+  --t:1;                   /* type scale       — set by the auto-fit engine */
+  --script:"Amalfi Coast","Great Vibes",cursive;
+  --sans:"Montserrat","Helvetica Neue",Arial,sans-serif;
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;background:#E8E6E1;
+  font-family:var(--sans);
+  font-size:calc(10.5pt * var(--t));
+  font-weight:400;line-height:1.5;color:var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+p{margin:0 0 calc(7px * var(--d));} p:last-child{margin-bottom:0;}
+ul{margin:0;padding-left:15px;}
+li{margin-bottom:calc(4px * var(--d));} li:last-child{margin-bottom:0;}
+a{color:var(--orange);}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+/* ---------- CONTROL BAR (screen only) ---------- */
+.controls{
+  position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;
+  padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px 14px;
+  align-items:flex-end;justify-content:center;box-shadow:0 2px 8px rgba(3,2,2,.25);
+}
+.ctrl{display:flex;flex-direction:column;gap:3px;}
+.ctrl label{font-size:8pt;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);}
+.ctrl select,.ctrl input[type=url],.ctrl input[type=text]{
+  font-family:var(--sans);font-size:9.5pt;padding:6px 8px;border:1px solid #4A5468;
+  border-radius:2px;background:#fff;color:var(--body);min-width:180px;
+}
+.ctrl input[type=url]{min-width:230px;}
+.ctrl input[type=text]{min-width:230px;}
+.ctrl-wide input[type=text]{min-width:330px;}
+.ctrl-check{flex-direction:row;align-items:center;gap:6px;padding-bottom:7px;}
+.ctrl-check label{text-transform:none;letter-spacing:.03em;font-size:9pt;color:#fff;font-weight:500;}
+.btn{font-family:var(--sans);font-size:9.5pt;font-weight:600;border-radius:2px;padding:9px 16px;cursor:pointer;letter-spacing:.03em;border:1px solid transparent;}
+.btn-print{background:var(--orange);color:#fff;border:0;}
+.btn-print:hover{background:#B84826;}
+.btn-ghost{background:transparent;color:#fff;border-color:#4A5468;padding:8px 13px;}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+
+/* fit + read-time meter */
+.meter{
+  width:100%;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;align-items:center;
+  font-size:8.5pt;letter-spacing:.04em;color:#A9B3C4;
+  border-top:1px solid #3A4558;padding-top:8px;
+}
+.meter b{font-weight:600;color:#fff;}
+.meter .ok{color:var(--teal);}
+.meter .warn{color:#F0A07E;}
+.meter .bad{color:#FF8C6B;}
+
+/* ---------- PAGE SHELL ---------- */
+.page{
+  width:8.5in;min-height:11in;margin:22px auto;padding:.45in .5in .4in;
+  background:#fff;box-shadow:0 3px 14px rgba(3,2,2,.18);position:relative;
+  display:flex;flex-direction:column;
+}
+.page.overflowing{box-shadow:0 0 0 2px var(--orange),0 3px 14px rgba(3,2,2,.18);}
+
+/* ---------- BANNERS ---------- */
+.masthead{background:var(--black);color:#fff;padding:calc(15px * var(--d)) 20px calc(13px * var(--d));text-align:center;margin:-.45in -.5in calc(13px * var(--d));}
+.logo-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:5px;}
+.logo-row img{max-height:calc(34px * var(--d));width:auto;display:block;}
+.logo-fallback{font-size:8pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fff;opacity:.9;}
+.masthead h1{font-family:var(--script);font-size:calc(24pt * var(--t));font-weight:400;line-height:1.1;color:#fff;margin:2px 0 4px;}
+.masthead .rule{width:120px;height:1px;background:var(--orange);margin:0 auto 6px;}
+.masthead .meta{font-size:8.5pt;font-weight:500;letter-spacing:.05em;color:#CFCAC4;margin:0;}
+.draft-tag{display:none;margin:6px auto 0;padding:2px 10px;border:1px solid var(--orange);font-size:7.5pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);width:max-content;}
+body.draft .draft-tag{display:block;}
+
+.footer-banner{background:var(--black);color:#fff;padding:calc(15px * var(--d)) 20px;margin:auto -.5in -.4in;text-align:center;}
+.footer-banner img{max-height:calc(38px * var(--d));margin-bottom:5px;}
+.footer-banner .hub{font-size:9.5pt;color:#fff;margin:0 0 5px;}
+.footer-banner .hub a{color:var(--teal);text-decoration:none;font-weight:600;word-break:break-word;}
+.footer-banner .credit{font-size:8pt;color:#9A948E;letter-spacing:.04em;margin:0;padding-top:6px;border-top:1px solid #2C2827;display:block;}
+
+/* ---------- TYPE ---------- */
+.section-header{font-size:calc(13pt * var(--t));font-weight:600;color:var(--orange);margin:0 0 calc(7px * var(--d));line-height:1.2;display:flex;align-items:center;gap:9px;}
+.section-header::after{content:"";flex:1;height:1px;background:var(--rule);}
+.subhead{font-size:calc(10pt * var(--t));font-weight:500;color:var(--teal);text-transform:uppercase;letter-spacing:.11em;margin:0 0 4px;}
+.section{margin-bottom:calc(13px * var(--d));}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--grey);padding:calc(11px * var(--d)) calc(13px * var(--d));border-radius:2px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:calc(11px * var(--d));}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:calc(9px * var(--d));}
+.bordered-orange{border-left:4px solid var(--orange);}
+.bordered-navy{border-left:4px solid var(--navy);}
+.bordered-teal{border-left:4px solid var(--teal);}
+
+.value-card{background:var(--tan);border-left:4px solid var(--orange);padding:calc(11px * var(--d)) calc(14px * var(--d));border-radius:2px;}
+.value-card .value-name{font-size:calc(11.5pt * var(--t));font-weight:600;color:var(--navy);margin:0 0 3px;}
+.value-card .value-tag{font-size:8.5pt;font-weight:500;color:var(--teal);text-transform:uppercase;letter-spacing:.11em;margin:0 0 4px;}
+
+.focus-box{display:grid;grid-template-columns:1fr 1fr;gap:calc(14px * var(--d));margin-top:calc(10px * var(--d));}
+.focus-box > div + div{border-left:1px solid var(--rule);padding-left:calc(14px * var(--d));}
+.focus-box .value-tag{margin-bottom:3px;}
+.huddle{display:grid;grid-template-columns:1.2in 1fr;gap:calc(13px * var(--d));align-items:start;}
+.huddle.no-photo{grid-template-columns:1fr;}
+.gm-focus{margin-top:calc(8px * var(--d));padding-top:calc(7px * var(--d));border-top:1px solid var(--rule);}
+.gm-focus strong{color:var(--navy);}
+
+.praise{background:var(--tan);border-left:4px solid var(--teal);padding:calc(10px * var(--d)) calc(13px * var(--d));border-radius:2px;}
+.praise .group{margin-bottom:calc(7px * var(--d));}
+.praise .group:last-child{margin-bottom:0;}
+.praise .dept{margin-bottom:2px;}
+.quote{font-style:italic;}
+
+.milestone-list{list-style:none;padding:0;margin:0;}
+.milestone-list li{display:flex;justify-content:space-between;gap:10px;padding:calc(2.5px * var(--d)) 0;border-bottom:1px dotted var(--rule);font-size:calc(10pt * var(--t));}
+.milestone-list li:last-child{border-bottom:0;}
+.milestone-list .who{font-weight:500;color:var(--navy);}
+.milestone-list .when{color:#6E6865;font-size:calc(9pt * var(--t));white-space:nowrap;}
+.card-note{font-size:calc(8.5pt * var(--t));color:#6E6865;margin-top:calc(6px * var(--d));}
+
+/* ---------- PHOTO FRAMES ---------- */
+.photo{margin:0;}
+.frame{
+  position:relative;background:#EDEAE4 center/cover no-repeat;border:1px dashed #C6C0B6;
+  border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.frame:hover{border-color:var(--orange);}
+.frame.headshot{aspect-ratio:1/1.1;}
+.frame.snapshot{aspect-ratio:4/3;}
+.frame.portrait{width:1in;aspect-ratio:1/1.12;flex:none;}
+.frame .frame-label{font-size:7.5pt;font-weight:500;color:#8A837A;letter-spacing:.06em;padding:6px;line-height:1.35;}
+.frame .frame-mark{display:none;font-family:var(--script);font-size:calc(15pt * var(--t));color:#C8BFAE;line-height:1.2;padding:6px;}
+.frame.filled{border-style:solid;border-color:var(--rule);}
+.frame.filled .frame-label,.frame.filled .frame-mark{display:none;}
+.frame input[type=file]{display:none;}
+.frame-caption{font-size:calc(8pt * var(--t));color:#6E6865;text-align:center;margin-top:3px;}
+
+/* per-frame state — set individually, frame by frame */
+.photo.mode-placeholder .frame:not(.filled){background:var(--tan);border:1px solid var(--rule);}
+.photo.mode-placeholder .frame:not(.filled) .frame-label{display:none;}
+.photo.mode-placeholder .frame:not(.filled) .frame-mark{display:block;}
+.photo.mode-hide .frame:not(.filled){display:none;}
+.photo.mode-hide .frame:not(.filled) ~ .frame-caption{display:none;}
+.photo.mode-hide:not(.has-photo) .frame-caption{display:none;}
+.section.all-hidden{display:none;}
+
+/* per-frame controls (screen only) */
+.frame-tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;justify-content:center;}
+.frame-tools button{
+  font-family:var(--sans);font-size:7pt;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;padding:2px 6px;border:1px solid var(--rule);
+  background:#fff;color:#8A837A;border-radius:2px;cursor:pointer;
+}
+.frame-tools button:hover{border-color:var(--orange);color:var(--orange);}
+.frame-tools button.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ---------- Q&A / PERK ---------- */
+.qa-row{display:flex;gap:calc(11px * var(--d));align-items:flex-start;}
+.qa-q{font-weight:600;color:var(--navy);}
+.perk-price{font-size:calc(15pt * var(--t));font-weight:700;color:var(--orange);line-height:1;margin:0 0 2px;}
+
+/* ---------- PUZZLE BLOCK ---------- */
+.puzzle{display:grid;grid-template-columns:2.5in 1fr 1.3in;gap:calc(12px * var(--d));align-items:start;}
+.ws-grid{display:grid;gap:2px;background:var(--rule);border:1px solid var(--rule);border-radius:2px;overflow:hidden;}
+.ws-cell{background:#fff;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:calc(10pt * var(--t));font-weight:500;color:var(--navy);cursor:pointer;user-select:none;}
+.ws-cell.armed{background:var(--teal);color:#fff;}
+.ws-cell.found{background:var(--orange);color:#fff;font-weight:600;}
+.word-bank{list-style:none;padding:0;margin:5px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:calc(9pt * var(--t));font-weight:500;letter-spacing:.05em;color:var(--navy);}
+.word-bank li{margin:0;}
+.word-bank li.found{color:var(--orange);text-decoration:line-through;}
+.ws-status{font-size:8.5pt;color:#6E6865;margin-top:5px;}
+.riddle{background:var(--tan);border-left:4px solid var(--navy);padding:calc(10px * var(--d)) calc(12px * var(--d));border-radius:2px;}
+.riddle .q{font-style:italic;color:var(--navy);}
+.btn-reveal{font-family:var(--sans);font-size:8.5pt;font-weight:600;background:transparent;color:var(--orange);border:1px solid var(--orange);border-radius:2px;padding:4px 10px;margin-top:6px;cursor:pointer;}
+.btn-reveal:hover{background:var(--orange);color:#fff;}
+.answer{display:none;margin-top:6px;font-weight:600;color:var(--navy);}
+.answer.shown{display:block;}
+.qr-block{text-align:center;}
+.qr-block img{width:var(--qr-size);height:var(--qr-size);display:block;margin:0 auto;background:#fff;image-rendering:pixelated;}
+.qr-block .qr-cap{font-size:calc(8pt * var(--t));color:#6E6865;margin-top:5px;line-height:1.35;}
+
+/* ---------- EDITABLE FIELDS ---------- */
+[contenteditable="true"]{outline:1px dashed #C6C0B6;outline-offset:2px;border-radius:1px;}
+[contenteditable="true"]:hover{outline-color:var(--orange);}
+[contenteditable="true"]:focus{outline:2px solid var(--orange);background:#FFFDF8;}
+.section-header [contenteditable="true"]{outline-offset:3px;}
+
+/* ---------- RESPONSIVE ---------- */
+@media screen and (max-width:900px){
+  .page{width:100%;min-height:0;margin:0;padding:0 18px 22px;box-shadow:none;}
+  .masthead{margin:0 -18px 14px;}
+  .footer-banner{margin:18px -18px 0;}
+  .grid-2,.grid-3,.puzzle,.focus-box{grid-template-columns:1fr;}
+  .focus-box > div + div{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:calc(10px * var(--d));}
+  .huddle{grid-template-columns:1fr;}
+  .frame.headshot{aspect-ratio:4/3;}
+  .frame.portrait{width:100%;aspect-ratio:4/3;}
+  .controls{position:static;}
+  .ctrl{width:100%;} .ctrl select,.ctrl input[type=url],.ctrl input[type=text]{min-width:0;width:100%;}
+  .qr-block img{width:1.4in;height:1.4in;}
+}
+
+/* ---------- READER MODE (no ?edit=1) ---------- */
+body.reader .controls{display:none !important;}
+body.reader .frame{cursor:default;}
+
+/* ---------- PRINT ---------- */
+@page{size:8.5in 11in;margin:.45in .5in;}
+@media print{
+  html,body{background:#fff;}
+  .no-print,.controls,.frame-tools{display:none !important;}
+  .page{width:auto;min-height:0;margin:0;padding:0;box-shadow:none;display:block;}
+  .page.overflowing{box-shadow:none;}
+  .page-1{page-break-after:always;break-after:page;}
+  .page-2{page-break-before:always;break-before:page;}
+  .page:last-of-type{page-break-after:auto;break-after:auto;}
+  .masthead,.footer-banner{margin-left:0;margin-right:0;}
+  .masthead{margin-top:0;}
+  .footer-banner{margin-bottom:0;margin-top:calc(12px * var(--d));}
+  .section,.card,.value-card,.focus-box,.praise,.riddle,.puzzle,.grid-2,.grid-3{page-break-inside:avoid;break-inside:avoid;}
+  [contenteditable="true"]{outline:none !important;background:transparent !important;}
+  .frame{border:1px solid var(--rule);}
+  .btn-reveal,.ws-status{display:none !important;}
+  .ws-cell.armed{background:#fff;color:var(--navy);}
+  a{text-decoration:none;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body class="reader">
+
+<!-- ======================= CONTROL BAR (screen only) ======================= -->
+
+
+<!-- ============================== PAGE 1 ============================== -->
+<section class="page page-1">
+
+  <header class="masthead">
+    <div class="logo-row">
+      <span class="logo-fallback">The Inn at Willow Grove</span>
+      <span class="logo-fallback">Escape · Unwind · Indulge</span>
+    </div>
+    <h1 id="newsletterTitle">The Willow Groove</h1>
+    <div class="rule"></div>
+    <p class="meta">Employee Newsletter &nbsp;|&nbsp; November 1, 2026 Launch Edition</p>
+    <span class="draft-tag">Draft for review</span>
+  </header>
+
+  <!-- A NOTE FROM MATT — opening content -->
+  <div class="section">
+    <h2 class="section-header"><span>The 15-Second Huddle</span></h2>
+    <div class="card bordered-navy">
+      <div class="huddle no-photo" id="huddleRow">
+        <!-- Paste a website image URL into data-fallback to use it as the standing photo -->
+        <figure class="photo mode-hide" data-mode="hide">
+          <div class="frame headshot" data-frame="Matt Scibal headshot" data-fallback="" tabindex="0" role="button" aria-label="Upload Matt Scibal headshot">
+            <span class="frame-label">Click to upload<br>Matt's headshot</span>
+            <span class="frame-mark">The Inn at<br>Willow Grove</span>
+          </div>
+          <figcaption class="frame-caption">Matt Scibal, GM</figcaption>
+        </figure>
+        <div>
+          <p class="subhead">A Note from Matt</p>
+          <p>Busy season is kicking our tails in the best way — weddings stacked back to back, a dining room that hasn't seen an empty table in weeks, and a spa book so full I'm pretty sure the therapists are dreaming about hot stones. This is the season that proves what we're actually made of. And it's not the linens or the view. It's <em>you</em>. Thank you for your hard work in making the guest experience special. Let's keep it up!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Focus + Core Value of the Month -->
+    <div class="value-card focus-box">
+      <div>
+        <p class="value-tag">This Month's Focus</p>
+        <p class="value-name">The Handoff</p>
+        <p>Every guest note passed cleanly between shifts — front desk to butler, butler to housekeeping, housekeeping to the dining room. One guest, one story, no repeating themselves.</p>
+      </div>
+      <div>
+        <p class="value-tag">Core Value of the Month</p>
+        <p class="value-name" id="valueName">Individualized Care</p>
+        <p id="valueBody">We see every guest as unique. By listening closely, anticipating needs, and personalizing each interaction, we create experiences that feel thoughtful, intentional, and memorable.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOUTOUT WALL -->
+  <div class="section">
+    <h2 class="section-header"><span>Kudos Corner</span></h2>
+    <div class="praise">
+      <div class="group">
+        <p class="subhead dept">Front Desk</p>
+        <p class="quote">"Check-in took under two minutes and they already knew it was our anniversary."</p>
+      </div>
+      <div class="group">
+        <p class="subhead dept">Vintage Restaurant</p>
+        <p class="quote">"Our server caught a dietary restriction we forgot to put on the reservation."</p>
+      </div>
+      <div class="group">
+        <p class="subhead dept">Housekeeping</p>
+        <p class="quote">"The room was immaculate — and turndown left a note for our daughter's birthday."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIFT SNAPSHOTS -->
+  <div class="section all-hidden" data-photo-section="snapshots">
+    <h2 class="section-header"><span>Shift Snapshots</span></h2>
+    <div class="grid-3">
+      <figure class="photo mode-hide" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 1" data-fallback="" tabindex="0" role="button" aria-label="Upload Shift photo 1">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption">Add a caption</figcaption>
+      </figure>
+      <figure class="photo mode-hide" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 2" data-fallback="" tabindex="0" role="button" aria-label="Upload Shift photo 2">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption">Add a caption</figcaption>
+      </figure>
+      <figure class="photo mode-hide" data-mode="hide">
+        <div class="frame snapshot" data-frame="Shift photo 3" data-fallback="" tabindex="0" role="button" aria-label="Upload Shift photo 3">
+          <span class="frame-label">Click to upload<br>a shift photo</span>
+          <span class="frame-mark">The Inn at<br>Willow Grove</span>
+        </div>
+        <figcaption class="frame-caption">Add a caption</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- MILESTONES -->
+  <div class="section">
+    <h2 class="section-header"><span>Milestones &amp; Mile-Markers</span></h2>
+    <div class="grid-2">
+      <div class="card bordered-orange">
+        <p class="subhead">November Birthday Crew</p>
+        <ul class="milestone-list">
+          <li><span class="who">Pending roster refresh</span><span class="when">—</span></li>
+        </ul>
+      </div>
+      <div class="card bordered-navy">
+        <p class="subhead">Service Anniversaries</p>
+        <ul class="milestone-list">
+          <li><span class="who">Kyleah Canela</span><span class="when">Nov 1 · 2 years</span></li>
+          <li><span class="who">Marcus Martinez</span><span class="when">Nov 10 · 1 year</span></li>
+          <li><span class="who">Brittany Lewis</span><span class="when">Nov 13 · 6 years</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================== PAGE 2 ============================== -->
+<section class="page page-2">
+
+  <!-- DEPARTMENT CORNERS -->
+  <div class="section">
+    <h2 class="section-header"><span>The Latest from the Floor</span></h2>
+    <div class="grid-2">
+      <div class="card bordered-orange">
+        <p class="subhead">Vintage Vibes — Restaurant Updates</p>
+        <p>Fall menu lands mid-month: braised short rib, duck with the last estate figs, chestnut soup. Sundays add a second brunch seating through the holidays.</p>
+        <p><strong>Staff tasting:</strong> Tuesday the 10th, 3:00 pm, before service.</p>
+      </div>
+      <div class="card bordered-teal">
+        <p class="subhead">Mill House — This Season at the Spa</p>
+        <p>The fireside massage is booking out fast on wedding weekends. The pumpkin-enzyme facial stays on the menu through the end of the month.</p>
+        <p><strong>Booking tip:</strong> Spa runs Wednesday to Sunday. Hold the slot rather than sending a guest away.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q&A + PERK -->
+  <div class="section">
+    <h2 class="section-header"><span>Did You Know?</span></h2>
+    <div class="grid-2">
+      <div class="card">
+        <p class="subhead">Employee Spotlight</p>
+        <div class="qa-row">
+          <figure class="photo mode-hide" data-mode="hide">
+            <div class="frame portrait" data-frame="Q&amp;A staff portrait" data-fallback="" tabindex="0" role="button" aria-label="Upload Q&amp;A staff portrait">
+              <span class="frame-label">Click to<br>upload</span>
+              <span class="frame-mark">IWG</span>
+            </div>
+          </figure>
+          <div>
+            <p><span class="qa-q">Who are we talking to?</span> Name, department, years on the estate.</p>
+            <p><span class="qa-q">Best part of the job?</span> Their answer here.</p>
+            <p><span class="qa-q">What guests never guess about your role?</span> Their answer here.</p>
+          </div>
+        </div>
+        <p class="card-note">Want to be featured? Tell your manager or leave a note at the front desk.</p>
+      </div>
+      <div class="card bordered-orange">
+        <p class="subhead">Employee Perks!</p>
+        <div class="qa-row">
+          <figure class="photo mode-hide" data-mode="hide">
+            <div class="frame portrait" data-frame="Staycation photo" data-fallback="" tabindex="0" role="button" aria-label="Upload Staycation photo">
+              <span class="frame-label">Click to<br>upload</span>
+              <span class="frame-mark">IWG</span>
+            </div>
+          </figure>
+          <div>
+            <p class="perk-price">$50 / night</p>
+            <p>Any employee can stay on property for $50 a night, subject to availability.</p>
+            <p><strong>To book:</strong> email Matt with your dates. Blackout on buyouts and wedding weekends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUZZLE + QR -->
+  <div class="section">
+    <h2 class="section-header"><span>The Back Page</span></h2>
+    <div class="puzzle">
+
+      <div>
+        <p class="subhead" id="puzzleTitle">Estate Word Search</p>
+        <div class="ws-grid" id="wsGrid" role="grid" aria-label="Estate word search" style="grid-template-columns: repeat(8, 1fr);"><div class="ws-cell" role="gridcell" tabindex="0">T</div><div class="ws-cell" role="gridcell" tabindex="0">A</div><div class="ws-cell" role="gridcell" tabindex="0">B</div><div class="ws-cell" role="gridcell" tabindex="0">L</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">S</div><div class="ws-cell" role="gridcell" tabindex="0">F</div><div class="ws-cell" role="gridcell" tabindex="0">V</div><div class="ws-cell" role="gridcell" tabindex="0">Y</div><div class="ws-cell" role="gridcell" tabindex="0">S</div><div class="ws-cell" role="gridcell" tabindex="0">F</div><div class="ws-cell" role="gridcell" tabindex="0">N</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">N</div><div class="ws-cell" role="gridcell" tabindex="0">I</div><div class="ws-cell" role="gridcell" tabindex="0">L</div><div class="ws-cell" role="gridcell" tabindex="0">O</div><div class="ws-cell" role="gridcell" tabindex="0">C</div><div class="ws-cell" role="gridcell" tabindex="0">S</div><div class="ws-cell" role="gridcell" tabindex="0">C</div><div class="ws-cell" role="gridcell" tabindex="0">I</div><div class="ws-cell" role="gridcell" tabindex="0">D</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">R</div><div class="ws-cell" role="gridcell" tabindex="0">I</div><div class="ws-cell" role="gridcell" tabindex="0">H</div><div class="ws-cell" role="gridcell" tabindex="0">A</div><div class="ws-cell" role="gridcell" tabindex="0">R</div><div class="ws-cell" role="gridcell" tabindex="0">V</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">S</div><div class="ws-cell" role="gridcell" tabindex="0">T</div><div class="ws-cell" role="gridcell" tabindex="0">R</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">W</div><div class="ws-cell" role="gridcell" tabindex="0">K</div><div class="ws-cell" role="gridcell" tabindex="0">H</div><div class="ws-cell" role="gridcell" tabindex="0">T</div><div class="ws-cell" role="gridcell" tabindex="0">V</div><div class="ws-cell" role="gridcell" tabindex="0">M</div><div class="ws-cell" role="gridcell" tabindex="0">F</div><div class="ws-cell" role="gridcell" tabindex="0">H</div><div class="ws-cell" role="gridcell" tabindex="0">E</div><div class="ws-cell" role="gridcell" tabindex="0">A</div><div class="ws-cell" role="gridcell" tabindex="0">R</div><div class="ws-cell" role="gridcell" tabindex="0">T</div><div class="ws-cell" role="gridcell" tabindex="0">H</div></div>
+        <ul class="word-bank" id="wordBank"><li data-word="HARVEST">HARVEST</li><li data-word="HEARTH">HEARTH</li><li data-word="CIDER">CIDER</li><li data-word="LINEN">LINEN</li><li data-word="TABLE">TABLE</li><li data-word="CHEF">CHEF</li></ul>
+        <p class="card-note" id="puzzleNote" style="display: none;"></p>
+        <p class="ws-status no-print" id="wsStatus">Click the first letter, then the last letter of a word.</p>
+      </div>
+
+      <div class="riddle">
+        <p class="subhead" id="quizHeading">Shift Riddle</p>
+        <p class="q" id="quizQ">I am set every night and cleared every morning, yet I am never carried anywhere. What am I?</p>
+        <button class="btn-reveal no-print" id="revealBtn" type="button">Reveal answer</button>
+        <p class="answer" id="quizA">A table.</p>
+        <p class="card-note" id="prizeNote" style="display: none;"></p>
+      </div>
+
+      <div class="qr-block">
+        <p class="subhead">Scan Me</p>
+        <img id="qrImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQAAAAAgH8RuAAADqklEQVR42u2dS4rlMAxFr5qaOzuo/e/OWYF6IH/k5NWk7W5oOOYRgl9yBoaLPpYccx0a9y8dG6BAgQIFChQoUKBAgQIF6h+hbIwrgjvTbeNmDN1ml+Kx5yssOyhQO6jiMZruJLvUxFVckrt7lV3yKhVv1/EKyw4K1B+Or3FnkkqVZMVNcsluc8naZI1J9Wt+hWUHBWpfg3OEHQyVFddtfl9+m7oMLcmQZQcF6rwG+/DQY3ErPsRopcaVZQcF6qwGp2krVfflSsFg5Ge6cYxJPa0hyw4K1AaqJz+b1r49cjLt9+0xGepr6Zr1FZYdFKgdO+jvkLDbPr8tfu3+bTdZdlCgNkbbX+juZew7tJnhc6YH4t+5JdF3KLyy7KBAbWmwiavKa5ofj3XpxTPKgWFBg6BA7WpwSK/Jbfy6QZySLMtNEibLDgrUhgaHrLI1TO6oeqnMLJLpOsUOggJ1yg4uprA7qNPtfIWE2WtFg6BA7WrwIcZHUWjxD3Ei8SAoUAd90belqx8s4DtgxA6CArWvwSW+S391GzfjwRE5Li4rGgQFatsXHfZuplw87RWuRnDesD8ICtRRX3SaxZQvzTOLd0o8CArUOQ0+o79Vj8Mpzf5nfgwNggK1GQ/OGLArK1vGaROrshFkfxAUqL2R+gd7v3yo0dSbeUsd/fIeXb2jof6+NIu3WXZQoPZyMq967JwpXfzS/Dp2EBSoQ6iQWDsnrTw34qNhMHoGn+WjlWUHBWob1dU3j1aL/sFUL9p6eEOSZrot1MfZhqBAHcnJzGSLlsznI2uay2Mk6mRAgTqmwYf6lqqYHCqm40aX59EgKFA7OZlRL1oWC5iv754m+gdBgTqmwZp325X1KCmbvPepF2gQFKiNkfYH+6nacc625vmidXkmjvwdiRr2B0GBOhIPSvlUmVmuVhePtE36TOAQD4ICdTAnk3uUpLVjonxIny7FbGgQFKhNDZZFYlN3SW7jmcepF2gQFKh9DeYzZJbqtTrtXd6yb8IUtWqgQB3Q4NIc8YPinsfLOPEgKFAnczKPlMvcnX/lZKZrSp0MKFCnUKkMu33nZXz/xSy+wDvSNcNNlTQ+S8GygwK1m5PJiRetYeBrC+OhXOwgKFAnNfjeK0ynqM0dQ850AgXqL6GK52+f5TDQzOzbh3fau5ZYdlCgDtjB5wlO9cc++g/GETsICtSmBrO9K2uP/GufYjnpF18UFKitYX6KdLPsoECBAgUKFChQoECBAvUfoX4DtoUm/4bdhUEAAAAASUVORK5CYII=" alt="QR code to the newsletter folder">
+        <p class="qr-cap">Newsletter archive, past editions, and submissions.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer-banner">
+    <div class="logo-fallback" style="margin-bottom:6px">Escape · Unwind · Indulge</div>
+    <p class="hub">Schedules, forms, and everything referenced here live on the Team Hub —
+      <a href="https://sites.google.com/innatwillowgrove.com/iwgteam?usp=sharing" id="hubLink">sites.google.com/innatwillowgrove.com/iwgteam</a>
+    </p>
+    <span class="credit">Prepared by Deidre Durant, EA &nbsp;|&nbsp; The Inn at Willow Grove &nbsp;|&nbsp; Orange, Virginia</span>
+  </footer>
+
+</section>
+
+
+
+
+
+<script>window.__IWG__={"grid":[["T","A","B","L","E","S","F","V"],["Y","S","F","N","E","N","I","L"],["O","C","S","C","I","D","E","R"],["I","H","A","R","V","E","S","T"],["R","E","E","W","K","H","T","V"],["M","F","H","E","A","R","T","H"]],"placements":[{"word":"HARVEST","r":3,"c":1,"dr":0,"dc":1},{"word":"HEARTH","r":5,"c":2,"dr":0,"dc":1},{"word":"CIDER","r":2,"c":3,"dr":0,"dc":1},{"word":"LINEN","r":1,"c":7,"dr":0,"dc":-1},{"word":"TABLE","r":0,"c":0,"dr":0,"dc":1},{"word":"CHEF","r":2,"c":1,"dr":1,"dc":0}],"cols":8};
+(function(){
+ var D=window.__IWG__||{},cells={},armed=null,found={};
+ var grid=document.getElementById("wsGrid"),bank=document.getElementById("wordBank"),
+     st=document.getElementById("wsStatus");
+ function say(m){ if(st) st.textContent=m; }
+ if(grid&&D.grid){
+  grid.style.gridTemplateColumns="repeat("+D.cols+", 1fr)"; grid.innerHTML="";
+  D.grid.forEach(function(row,r){ row.forEach(function(ch,c){
+   var el=document.createElement("div"); el.className="ws-cell"; el.textContent=ch;
+   el.setAttribute("role","gridcell"); el.setAttribute("tabindex","0");
+   el.addEventListener("click",function(){pick(r,c,el);});
+   el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(r,c,el);}});
+   grid.appendChild(el); cells[r+":"+c]=el; }); });
+ }
+ if(bank&&D.placements){ bank.innerHTML="";
+  D.placements.forEach(function(p){ var li=document.createElement("li");
+   li.textContent=p.word; li.setAttribute("data-word",p.word); bank.appendChild(li); }); }
+ function pick(r,c,el){
+  if(!armed){armed={r:r,c:c,el:el};el.classList.add("armed");say("Now click the last letter.");return;}
+  if(armed.r===r&&armed.c===c){armed.el.classList.remove("armed");armed=null;say("Selection cleared.");return;}
+  var s=armed; s.el.classList.remove("armed"); armed=null;
+  var hit=match(s.r,s.c,r,c);
+  if(hit){ mark(hit); var left=D.placements.length-Object.keys(found).length;
+   say(left?hit.word+" found. "+left+" to go.":"All found. Nicely done."); }
+  else { say("Not one of them. Try again."); } }
+ function match(r1,c1,r2,c2){ for(var i=0;i<D.placements.length;i++){ var p=D.placements[i];
+   if(found[p.word])continue;
+   var eR=p.r+p.dr*(p.word.length-1),eC=p.c+p.dc*(p.word.length-1);
+   if((r1===p.r&&c1===p.c&&r2===eR&&c2===eC)||(r2===p.r&&c2===p.c&&r1===eR&&c1===eC))return p;
+  } return null; }
+ function mark(p){ for(var i=0;i<p.word.length;i++){
+   var k=(p.r+p.dr*i)+":"+(p.c+p.dc*i); if(cells[k])cells[k].classList.add("found"); }
+  found[p.word]=true;
+  var li=bank&&bank.querySelector('[data-word="'+p.word+'"]'); if(li)li.classList.add("found"); }
+ var rb=document.getElementById("revealBtn"),ra=document.getElementById("quizA");
+ if(rb&&ra){ rb.addEventListener("click",function(){
+  var sh=ra.classList.toggle("shown"); rb.textContent=sh?"Hide answer":"Reveal answer"; }); }
+ var pages=[].slice.call(document.querySelectorAll(".page")),
+     ST=[[1,1],[0.86,0.98],[0.74,0.95],[0.62,0.92]],R=document.documentElement,busy=false;
+ function refit(){ if(busy)return; busy=true; requestAnimationFrame(function(){
+  for(var i=0;i<ST.length;i++){ R.style.setProperty("--d",ST[i][0]); R.style.setProperty("--t",ST[i][1]);
+   var o=pages.map(function(p){return p.scrollHeight-1056;});
+   if(o[0]<=0&&o[1]<=0)break; } busy=false; }); }
+ window.addEventListener("resize",refit); window.addEventListener("beforeprint",refit);
+ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(refit);}
+ window.addEventListener("load",refit); refit();
+ say("Click the first letter, then the last letter of a word.");
+})();</script></body></html>
