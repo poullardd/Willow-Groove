@@ -314,7 +314,7 @@ body.reader .frame{cursor:default;}
   <button class="btn btn-ghost" id="allHideBtn" type="button">Hide all empty</button>
   <button class="btn btn-ghost" id="allPlaceBtn" type="button">Placeholder all empty</button>
   <div class="ctrl ctrl-check">
-    <input type="checkbox" id="draftToggle" checked>
+    <input type="checkbox" id="draftToggle">
     <label for="draftToggle">Mark as draft</label>
   </div>
   <button class="btn btn-print" id="printBtn" type="button">⬇ Download PDF</button>
@@ -326,7 +326,7 @@ body.reader .frame{cursor:default;}
     <span>Density <b id="fitLevel">—</b></span>
     <span>Read time <b id="readTime">—</b></span>
     <span id="meterNote"></span>
-    <span>PDF opens your browser's print dialog — choose “Save as PDF”. HTML downloads the staff edition, ready to commit as index.html.</span>
+    <span>PDF opens your browser's print dialog — choose “Save as PDF”. HTML downloads the read-only staff edition. Add <code>?reader=1</code> to the address to preview it first.</span>
   </div>
 </div>
 
@@ -655,28 +655,25 @@ body.reader .frame{cursor:default;}
        ?edit=1         full toolkit    — building and previewing
        ?draft=1        reader edition with the Draft for review tag
      ============================================================ */
+  /* ============================================================
+     THIS PAGE IS THE BUILDER. The toolkit is always on.
+     Staff never visit this URL — they get the PDF by email and the
+     published edition from the Team Hub. Download HTML produces that
+     read-only edition as a separate file.
+       ?reader=1   preview what the exported edition will look like
+       ?draft=1    show the Draft for review tag
+     ============================================================ */
   var PARAMS = new URLSearchParams(window.location.search);
+  var EDIT   = !PARAMS.has('reader');
   var DRAFT  = PARAMS.has('draft');
 
-  /* Edit mode sticks once turned on, so the plain URL keeps the toolkit
-     on this browser. ?edit=0 turns it off again. Staff never visit
-     ?edit=1, so they never get it. */
-  var EDIT;
-  try {
-    if(PARAMS.get('edit') === '0'){ window.localStorage.removeItem('iwg_edit'); EDIT = false; }
-    else if(PARAMS.has('edit'))   { window.localStorage.setItem('iwg_edit','1'); EDIT = true; }
-    else                          { EDIT = window.localStorage.getItem('iwg_edit') === '1'; }
-  } catch(err) {
-    EDIT = PARAMS.has('edit') && PARAMS.get('edit') !== '0';
-  }
-
   document.body.classList.toggle('reader', !EDIT);
-  if(EDIT || DRAFT){ document.body.classList.add('draft'); }
   if(!EDIT){
     Array.prototype.forEach.call(document.querySelectorAll('[contenteditable]'), function(el){
       el.removeAttribute('contenteditable');
     });
   }
+  if(DRAFT){ document.body.classList.add('draft'); }
 
   var $ = function(id){ return document.getElementById(id); };
   var root = document.documentElement;
