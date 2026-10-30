@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Willow Groove — Builder | Build 11</title>
-<!-- BUILD 11 — 25 Oct 2026. If the page you are looking at does not show
-     "BUILD 11" in the toolbar, you are seeing a cached or older deployment. -->
+<title>The Willow Groove — Builder | Build 12</title>
+<!-- BUILD 12 — 25 Oct 2026. If the page you are looking at does not show
+     "BUILD 12" in the toolbar, you are seeing a cached or older deployment. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -324,8 +324,10 @@ body.reader .frame{cursor:default;}
     <input id="editionCode" type="text" value="2026-11" size="8">
   </div>
   <button class="btn btn-print" id="printBtn" type="button">⬇ Download PDF</button>
-  <button class="btn btn-print" id="htmlBtn" type="button">⬇ Download HTML</button>
-  <button class="btn btn-ghost" id="saveBtn" type="button">💾 Save builder</button>
+  <button class="btn btn-print" id="htmlBtn" type="button">⬇ Edition file</button>
+  <button class="btn btn-ghost" id="copyEditionBtn" type="button">📋 Copy edition code</button>
+  <button class="btn btn-ghost" id="saveBtn" type="button">💾 Builder file</button>
+  <button class="btn btn-ghost" id="copyBuilderBtn" type="button">📋 Copy builder code</button>
 
   <div class="meter">
     <span>Page 1 <b id="fit1">—</b></span>
@@ -333,8 +335,8 @@ body.reader .frame{cursor:default;}
     <span>Density <b id="fitLevel">—</b></span>
     <span>Read time <b id="readTime">—</b></span>
     <span id="meterNote"></span>
-    <span style="color:#76C3C4;font-weight:600;">BUILD 11 · 25 Oct 2026</span>
-    <span>PDF opens your print dialog — choose “Save as PDF”. HTML downloads the staff edition (dated name). Save builder keeps this month's work as index.html. Add <code>?reader=1</code> to preview it first.</span>
+    <span style="color:#76C3C4;font-weight:600;">BUILD 12 · 25 Oct 2026</span>
+    <span>PDF opens your print dialog — choose “Save as PDF”. Edition = the read-only staff newsletter. Builder = this tool. Use Copy to paste into GitHub's file editor, or the file buttons to upload. Add <code>?reader=1</code> to preview it first.</span>
   </div>
 </div>
 
@@ -1208,9 +1210,34 @@ body.reader .frame{cursor:default;}
     });
   }
 
-  /* Download the BUILDER itself, carrying everything on screen. Commit it as
-     index.html and next month opens where this month left off. */
-  function downloadBuilder(){
+  /* Copy the finished markup to the clipboard, for pasting straight into
+     GitHub's file editor. Falls back to the old execCommand route when the
+     clipboard API is unavailable (it needs a secure context). */
+  function copyText(text, label){
+    function ok(){ $('meterNote').textContent = label + ' copied — paste it into GitHub and commit.'; }
+    function fail(){ $('meterNote').textContent = 'Could not copy. Use the file button instead.'; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, function(){ legacyCopy(text, ok, fail); });
+    } else {
+      legacyCopy(text, ok, fail);
+    }
+  }
+  function legacyCopy(text, ok, fail){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    var done = false;
+    try { done = document.execCommand('copy'); } catch(err){ done = false; }
+    document.body.removeChild(ta);
+    done ? ok() : fail();
+  }
+
+  /* The BUILDER itself, carrying everything on screen. Commit it as index.html
+     and next month opens where this month left off. */
+  function buildBuilderHTML(){
     bakeFormState();
     var clone = document.documentElement.cloneNode(true);
     stripGenerated(clone);
@@ -1219,11 +1246,10 @@ body.reader .frame{cursor:default;}
       JSON.stringify({ grid: gridLetters, placements: placements, cols: COLS }));
     var t = clone.querySelector('title');
     if(t){ t.textContent = 'The Willow Groove — Builder | ' + editionCodeValue(); }
-    saveFile('<!DOCTYPE html>\n' + clone.outerHTML, 'index.html');
-    $('meterNote').textContent = 'Builder saved as index.html — commit it to keep this month\u2019s work.';
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
   }
 
-  function downloadReader(){
+  function buildReaderHTML(){
     bakeFormState();
     var clone = document.documentElement.cloneNode(true);
 
@@ -1249,13 +1275,25 @@ body.reader .frame{cursor:default;}
       JSON.stringify({ grid: gridLetters, placements: placements, cols: COLS }) + ';\n' + READER_JS;
     cBody.appendChild(baked);
 
-    var name = 'the-willow-groove-' + editionCodeValue() + '.html';
-    saveFile('<!DOCTYPE html>\n' + clone.outerHTML, name);
-    $('meterNote').textContent = 'Downloaded ' + name + ' — upload it to the repository root.';
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
   }
 
-  $('htmlBtn').addEventListener('click', downloadReader);
-  $('saveBtn').addEventListener('click', downloadBuilder);
+  function editionFileName(){ return 'the-willow-groove-' + editionCodeValue() + '.html'; }
+
+  $('htmlBtn').addEventListener('click', function(){
+    saveFile(buildReaderHTML(), editionFileName());
+    $('meterNote').textContent = 'Downloaded ' + editionFileName() + ' — upload it to the repository.';
+  });
+  $('saveBtn').addEventListener('click', function(){
+    saveFile(buildBuilderHTML(), 'index.html');
+    $('meterNote').textContent = 'Builder saved as index.html — commit it to keep this month\u2019s work.';
+  });
+  $('copyEditionBtn').addEventListener('click', function(){
+    copyText(buildReaderHTML(), 'Edition code');
+  });
+  $('copyBuilderBtn').addEventListener('click', function(){
+    copyText(buildBuilderHTML(), 'Builder code');
+  });
 
   /* ---------- Caption placeholders stay out of the print ---------- */
   var PLACEHOLDERS = ['add a caption',''];
