@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Willow Groove — Builder | Build 8</title>
-<!-- BUILD 8 — 25 Oct 2026. If the page you are looking at does not show
-     "BUILD 8" in the toolbar, you are seeing a cached or older deployment. -->
+<title>The Willow Groove — Builder | Build 11</title>
+<!-- BUILD 11 — 25 Oct 2026. If the page you are looking at does not show
+     "BUILD 11" in the toolbar, you are seeing a cached or older deployment. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -325,6 +325,7 @@ body.reader .frame{cursor:default;}
   </div>
   <button class="btn btn-print" id="printBtn" type="button">⬇ Download PDF</button>
   <button class="btn btn-print" id="htmlBtn" type="button">⬇ Download HTML</button>
+  <button class="btn btn-ghost" id="saveBtn" type="button">💾 Save builder</button>
 
   <div class="meter">
     <span>Page 1 <b id="fit1">—</b></span>
@@ -332,8 +333,8 @@ body.reader .frame{cursor:default;}
     <span>Density <b id="fitLevel">—</b></span>
     <span>Read time <b id="readTime">—</b></span>
     <span id="meterNote"></span>
-    <span style="color:#76C3C4;font-weight:600;">BUILD 8 · 25 Oct 2026</span>
-    <span>PDF opens your print dialog — choose “Save as PDF”. HTML downloads the staff edition under its own dated name, so it can never overwrite this builder. Add <code>?reader=1</code> to preview it first.</span>
+    <span style="color:#76C3C4;font-weight:600;">BUILD 11 · 25 Oct 2026</span>
+    <span>PDF opens your print dialog — choose “Save as PDF”. HTML downloads the staff edition (dated name). Save builder keeps this month's work as index.html. Add <code>?reader=1</code> to preview it first.</span>
   </div>
 </div>
 
@@ -541,7 +542,7 @@ body.reader .frame{cursor:default;}
 
       <div class="qr-block">
         <p class="subhead" contenteditable="true">Scan Me</p>
-        <img id="qrImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQAAAAAgH8RuAAADqklEQVR42u2dS4rlMAxFr5qaOzuo/e/OWYF6IH/k5NWk7W5oOOYRgl9yBoaLPpYccx0a9y8dG6BAgQIFChQoUKBAgQIF6h+hbIwrgjvTbeNmDN1ml+Kx5yssOyhQO6jiMZruJLvUxFVckrt7lV3yKhVv1/EKyw4K1B+Or3FnkkqVZMVNcsluc8naZI1J9Wt+hWUHBWpfg3OEHQyVFddtfl9+m7oMLcmQZQcF6rwG+/DQY3ErPsRopcaVZQcF6qwGp2krVfflSsFg5Ge6cYxJPa0hyw4K1AaqJz+b1r49cjLt9+0xGepr6Zr1FZYdFKgdO+jvkLDbPr8tfu3+bTdZdlCgNkbbX+juZew7tJnhc6YH4t+5JdF3KLyy7KBAbWmwiavKa5ofj3XpxTPKgWFBg6BA7WpwSK/Jbfy6QZySLMtNEibLDgrUhgaHrLI1TO6oeqnMLJLpOsUOggJ1yg4uprA7qNPtfIWE2WtFg6BA7WrwIcZHUWjxD3Ei8SAoUAd90belqx8s4DtgxA6CArWvwSW+S391GzfjwRE5Li4rGgQFatsXHfZuplw87RWuRnDesD8ICtRRX3SaxZQvzTOLd0o8CArUOQ0+o79Vj8Mpzf5nfgwNggK1GQ/OGLArK1vGaROrshFkfxAUqL2R+gd7v3yo0dSbeUsd/fIeXb2jof6+NIu3WXZQoPZyMq967JwpXfzS/Dp2EBSoQ6iQWDsnrTw34qNhMHoGn+WjlWUHBWob1dU3j1aL/sFUL9p6eEOSZrot1MfZhqBAHcnJzGSLlsznI2uay2Mk6mRAgTqmwYf6lqqYHCqm40aX59EgKFA7OZlRL1oWC5iv754m+gdBgTqmwZp325X1KCmbvPepF2gQFKiNkfYH+6nacc625vmidXkmjvwdiRr2B0GBOhIPSvlUmVmuVhePtE36TOAQD4ICdTAnk3uUpLVjonxIny7FbGgQFKhNDZZFYlN3SW7jmcepF2gQFKh9DeYzZJbqtTrtXd6yb8IUtWqgQB3Q4NIc8YPinsfLOPEgKFAnczKPlMvcnX/lZKZrSp0MKFCnUKkMu33nZXz/xSy+wDvSNcNNlTQ+S8GygwK1m5PJiRetYeBrC+OhXOwgKFAnNfjeK0ynqM0dQ850AgXqL6GK52+f5TDQzOzbh3fau5ZYdlCgDtjB5wlO9cc++g/GETsICtSmBrO9K2uP/GufYjnpF18UFKitYX6KdLPsoECBAgUKFChQoECBAvUfoX4DtoUm/4bdhUEAAAAASUVORK5CYII=" alt="QR code to the newsletter folder">
+        <img id="qrImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAIcAQAAAACVhUrRAAADNElEQVR42u2dQW4YIQxF7ap7uEHvf6zcAE7wuzAYM4m6SStVmjeKkskIvYWlrw+2AZd9+5k/7C88QIAAAQIECBAgQIAAAfJPIJ5PN+9m083Wi7vbPN+9X4MJLJC3Qn6uv20sEZnJzJo8vjTFR8vv92ACCwTI8ZHp7q4P1zCbHh6kD48xGvdgAgvk5b5TnnATb7JtNCuPPbu14dt0CCwQIM+nyZo0bK1xmuryh8ACAfLwnatIGhqZrv0eNuRt+OfBBBbImyFzZc6q9VjT8p0QTrevBxNYIC/2nYfphN1oJwqOE5npaToEFsirIeEpUbsJl9Ewa5L2ewhnnOJOcSICC+SFEJOWQFId+XNEVIbV8fGuQWCBvFc7GrYU0bSEYyYpFzvx/ehLCldCO0DQzpmkbVEsvTSlWLLToJoR2gFCbVRRGJ0uM28jXhQ56kwpTLc2oma666QEFsh7tZPpZs1+sm3xHnYz+1LW7nATgQXCnG3P2VZ+YE/VzpLHrC551sKH9Q4QtLMTaPn7JNxqJuGI5RRP0Q6Qt2sn7cY+NbbdSYNUFrkCIGgnJ2bpNXVKlnXSM3OjvgMESNFOrmKuOmnWQ6vj5OQN7QAhVzDOGuesfcZz/pZTu9pjgHaAMGe7kgbDHv0GOzNwWg7QDhC088wGlFac7NK5vKkxZwOCdq4sdJ2Y5YBnc45R3wEC5M5Rl5zApaCSrD6VU+o7QIyenL2x+jStdW0FZfuNt6E8BuQ6uIDAAnn3ekf6vO+g9uE8EgXM2YDgO6eDOswldlvnAYZ5zmG2gM5OYIGgneucnNnrjgPbGxA0PU4K1ewxneOcHCBo59qDEKubsw2hh3DypKm1baeYFIEF8vYcdXn+tLHUnntLWe8AMe5ByKsNSu+0pLz+IFsOvBNYIEC+ugchJml5NMFOEfhuEy1TOOZsQICcqw38l9b1B2E3060WdOY5EXQXUgksEO5BOLm1cwZ1Ws/KuUUCoYtcARByBbqLoXXb9Z0lOGe1sX8HCL7z1T0I6SnFdFaXTvwbFyKIwALBd+ze41Z3H+jaUvrFvmx8B8gbIa7vMyaBBQIECBAgQIAAAQIEyH8I+Q2OJEo23rekVQAAAABJRU5ErkJggg==" alt="QR code to the newsletter folder">
         <p class="qr-cap" contenteditable="true">Newsletter archive, past editions, and submissions.</p>
       </div>
 
@@ -1170,7 +1171,60 @@ body.reader .frame{cursor:default;}
     '})();'
   ].join('\n');
 
+  /* Form state lives in DOM properties, not attributes, so a clone loses it.
+     Writing it back first is what lets a saved file reopen as it looked. */
+  function bakeFormState(){
+    Array.prototype.forEach.call(document.querySelectorAll('input[type=text],input[type=url]'), function(el){
+      el.setAttribute('value', el.value);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('select'), function(sel){
+      Array.prototype.forEach.call(sel.options, function(o){
+        if(o.selected){ o.setAttribute('selected',''); } else { o.removeAttribute('selected'); }
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('input[type=checkbox]'), function(el){
+      if(el.checked){ el.setAttribute('checked',''); } else { el.removeAttribute('checked'); }
+    });
+  }
+
+  function editionCodeValue(){
+    return ($('editionCode').value || '').trim().replace(/[^0-9A-Za-z-]/g,'') || 'edition';
+  }
+
+  function saveFile(html, name){
+    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  }
+
+  function stripGenerated(clone){
+    ['.frame-tools', '.frame input[type=file]'].forEach(function(sel){
+      Array.prototype.forEach.call(clone.querySelectorAll(sel), function(el){
+        el.parentNode.removeChild(el);
+      });
+    });
+  }
+
+  /* Download the BUILDER itself, carrying everything on screen. Commit it as
+     index.html and next month opens where this month left off. */
+  function downloadBuilder(){
+    bakeFormState();
+    var clone = document.documentElement.cloneNode(true);
+    stripGenerated(clone);
+    // carry the exact grid so a reopened builder is identical, not merely equivalent
+    clone.querySelector('body').setAttribute('data-saved-grid',
+      JSON.stringify({ grid: gridLetters, placements: placements, cols: COLS }));
+    var t = clone.querySelector('title');
+    if(t){ t.textContent = 'The Willow Groove — Builder | ' + editionCodeValue(); }
+    saveFile('<!DOCTYPE html>\n' + clone.outerHTML, 'index.html');
+    $('meterNote').textContent = 'Builder saved as index.html — commit it to keep this month\u2019s work.';
+  }
+
   function downloadReader(){
+    bakeFormState();
     var clone = document.documentElement.cloneNode(true);
 
     var bar = clone.querySelector('.controls');
@@ -1195,20 +1249,13 @@ body.reader .frame{cursor:default;}
       JSON.stringify({ grid: gridLetters, placements: placements, cols: COLS }) + ';\n' + READER_JS;
     cBody.appendChild(baked);
 
-    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
-    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    var code = ($('editionCode').value || '').trim().replace(/[^0-9A-Za-z-]/g,'') || 'edition';
-    a.download = 'the-willow-groove-' + code + '.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
-    $('meterNote').textContent = 'Downloaded ' + a.download + ' — upload it to the repository root.';
+    var name = 'the-willow-groove-' + editionCodeValue() + '.html';
+    saveFile('<!DOCTYPE html>\n' + clone.outerHTML, name);
+    $('meterNote').textContent = 'Downloaded ' + name + ' — upload it to the repository root.';
   }
 
   $('htmlBtn').addEventListener('click', downloadReader);
+  $('saveBtn').addEventListener('click', downloadBuilder);
 
   /* ---------- Caption placeholders stay out of the print ---------- */
   var PLACEHOLDERS = ['add a caption',''];
@@ -1225,8 +1272,24 @@ body.reader .frame{cursor:default;}
     });
   });
 
-  /* ---------- Boot ---------- */
-  loadEdition(editionPick.value);
+  /* ---------- Boot ----------
+     A saved builder arrives with its puzzle already in the fields; applying
+     those beats reloading a preset over the top of them. */
+  var savedGrid = document.body.getAttribute('data-saved-grid');
+  var restored = false;
+  if(savedGrid){
+    try {
+      var sg = JSON.parse(savedGrid);
+      if(sg && sg.grid && sg.placements){
+        gridLetters = sg.grid; placements = sg.placements; COLS = sg.cols;
+        render(); restored = true;
+      }
+    } catch(err){ restored = false; }
+  }
+  if(!restored){
+    if(EDIT && $('wordsInput') && $('wordsInput').value.trim()){ applyPuzzle(); }
+    else { loadEdition(editionPick.value); }
+  }
   applyState();
   window.addEventListener('load', refit);
 })();
